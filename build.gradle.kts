@@ -2,7 +2,9 @@ plugins {
     id("java")
     id("application")
 }
-
+application {
+    getMainClass().set("agh.ics.oop.World")
+}
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))

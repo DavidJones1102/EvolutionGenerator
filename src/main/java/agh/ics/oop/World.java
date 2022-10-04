@@ -42,6 +42,7 @@ public class World {
                 default:
                     tab_enum[i] = Direction.UNKNOWN;
                     break;
+
             }
         }
         return tab_enum;
