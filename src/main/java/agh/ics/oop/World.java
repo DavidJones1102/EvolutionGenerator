@@ -2,55 +2,73 @@ package agh.ics.oop;
 import static java.lang.System.out;
 
 public class World {
-    public static void run( Direction[] tab ){
-        for(Direction el: tab){
+   public static void run( MoveDirection[] tab ){
+       for (MoveDirection direction : tab) {
+           switch (direction) {
+               case FORWARD -> out.println("Zwierzak idzie do przodu");
+               case BACKWARD -> out.println("Zwierzak idzie do tyłu");
+               case RIGHT -> out.println("Zwierzak skręca w prawo");
+               case LEFT -> out.println("Zwierzak skręca w lewo");
+               default -> {
+               }
+           }
+       }
+   }
+    public static MoveDirection[] change(String[] tab ){
+        int length = 0;
+        for (String s : tab) {
+            if (s.equals("f") || s.equals("b") || s.equals("r") || s.equals("l")) {
+                length++;
+            }
+        }
+        MoveDirection[] tab_enum = new MoveDirection[length];
+        int curr_index = 0;
+        for(String el: tab){
             switch (el) {
-                case FORWARD:
-                    out.println("Zwierzak idzie do przodu");
+                case "f" :
+                    tab_enum[ curr_index ] = MoveDirection.FORWARD;
+                    curr_index++;
                     break;
-                case BACKWARD:
-                    out.println("Zwierzak idzie do tyłu");
+                case "b" :
+                    tab_enum[ curr_index ] = MoveDirection.BACKWARD;
+                    curr_index++;
                     break;
-                case RIGHT:
-                    out.println("Zwierzak skręca w prawo");
+                case "r" :
+                    tab_enum[ curr_index ] = MoveDirection.RIGHT;
+                    curr_index++;
                     break;
-                case LEFT:
-                    out.println("Zwierzak skręca w lewo");
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-    public static Direction[] change( String[] tab ){
-        int length = tab.length;
-        Direction[] tab_enum = new Direction[length];
-        for(int i=0; i<length; i++){
-            switch (tab[i]){
-                case "f":
-                    tab_enum[i] = Direction.FORWARD;
-                    break;
-                case "b":
-                    tab_enum[i] = Direction.BACKWARD;
-                    break;
-                case "r":
-                    tab_enum[i] = Direction.RIGHT;
-                    break;
-                case "l":
-                    tab_enum[i] = Direction.LEFT;
+                case "l" :
+                    tab_enum[ curr_index ] = MoveDirection.LEFT;
+                    curr_index++;
                     break;
                 default:
-                    tab_enum[i] = Direction.UNKNOWN;
                     break;
-
+                }
             }
-        }
         return tab_enum;
     }
     public static void main( String[] args){
         out.println("system wystartował");
-        Direction[] tab_enum = change(args);
+        MoveDirection[] tab_enum = change(args);
         run(tab_enum);
         out.println("system zakończył działanie");
+
+        Vector2d v = new Vector2d(4,3);
+        Vector2d u = new Vector2d(2,5);
+        out.println(v.follows(u));
+        out.println(v.subtract(u));
+        out.println(u.equals(v));
+        Vector2d position1 = new Vector2d(1,2);
+        System.out.println(position1);
+        Vector2d position2 = new Vector2d(-2,1);
+        System.out.println(position2);
+        System.out.println(position1.add(position2));
+
+        MapDirection el = MapDirection.NORTH;
+        out.println( el.toString( ));
+        MapDirection el2 = el.previous();
+        out.println( el2.toString( ));
     }
 }
+
+
