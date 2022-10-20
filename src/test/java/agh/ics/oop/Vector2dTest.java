@@ -3,8 +3,7 @@ package agh.ics.oop;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-//  upperRight(Vector2d other),lowerLeft(Vector2d other), add(Vector2d other),
-//  subtract(Vector2d other), opposite().
+//  @setup
 public class Vector2dTest {
     Vector2d v1 = new Vector2d(2,3);
     Vector2d v2 = new Vector2d(2,3);

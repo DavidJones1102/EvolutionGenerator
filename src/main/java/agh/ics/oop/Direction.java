@@ -8,10 +8,10 @@ enum MoveDirection {
 }
 
 enum MapDirection{
-    NORTH,
-    EAST,
-    SOUTH,
-    WEST;
+    NORTH ,
+    EAST ,
+    SOUTH ,
+    WEST ;
 
     public String toString( MapDirection el){
         switch (this){
@@ -30,7 +30,7 @@ enum MapDirection{
         return this.values()[ (this.ordinal()+3)%4 ];
     }
 
-    public Vector2d toUnitVector() {
+    public Vector2d toUnitVector() { //!zrobić lepiej, tylko zwracać
         switch (this){
             case NORTH: return new Vector2d(0,1);
             case EAST: return new Vector2d(1,0);

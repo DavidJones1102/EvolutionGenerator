@@ -1,16 +1,14 @@
 package agh.ics.oop;
 
 public class Vector2d {
-    final int x;
-    final int y;
+    public final int x;
+    public final int y;
     public Vector2d(int x, int y){
         this.x=x;
         this.y=y;
     }
 
-
     public String toString(){
-
         return "("+this.x+","+this.y+")";
     }
 
@@ -39,10 +37,13 @@ public class Vector2d {
         return new Vector2d( -this.x, -this.y);
     }
 
-    public boolean equals(Vector2d other){       //!!!!!!!!!!!!!!!!!
-        return this.x==other.x && this.y==other.y;
+    public boolean equals(Object other){
+        if ( other instanceof Vector2d ){
+            return this.x==((Vector2d)other).x && this.y==((Vector2d)other).y;
+        }
+        else {return false;}
     }
-
+    public int hashCode(){ return Integer.hashCode(this.x)+Integer.hashCode(this.y);}
 }
 
 
