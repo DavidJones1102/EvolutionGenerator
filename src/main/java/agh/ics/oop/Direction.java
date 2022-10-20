@@ -9,7 +9,6 @@ enum MoveDirection {
 
 enum MapDirection{
     NORTH,
-
     EAST,
     SOUTH,
     WEST;

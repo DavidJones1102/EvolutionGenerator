@@ -8,17 +8,17 @@ public class Vector2d {
         this.y=y;
     }
 
+
     public String toString(){
-        return "("+Integer.toString(this.x)+","+Integer.toString(this.y)+")";
+
+        return "("+this.x+","+this.y+")";
     }
 
-    public boolean follows(Vector2d other){
-        if( this.x <= other.x && this.y<= other.y) return true;
-        else return false;
+    public boolean follows( Vector2d other){
+        return this.x >= other.x && this.y >= other.y;
     }
     public boolean precedes(Vector2d other){
-        if( this.x>= other.x && this.y>= other.y) return true;
-        else return false;
+        return this.x <= other.x && this.y <= other.y;
     }
 
     public Vector2d upperRight(Vector2d other){

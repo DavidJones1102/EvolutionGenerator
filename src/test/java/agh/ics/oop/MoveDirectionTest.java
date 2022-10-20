@@ -15,4 +15,17 @@ public class MoveDirectionTest {
         assertEquals(south.next(),MapDirection.WEST);
         assertEquals(west.next(),MapDirection.NORTH);
     }
+
+    @Test
+    public void previousTest() {
+        MapDirection north = MapDirection.NORTH;
+        MapDirection east = MapDirection.EAST;
+        MapDirection south = MapDirection.SOUTH;
+        MapDirection west = MapDirection.WEST;
+
+        assertEquals(north.previous(),MapDirection.WEST);
+        assertEquals(east.previous(),MapDirection.NORTH);
+        assertEquals(south.previous(),MapDirection.EAST);
+        assertEquals(west.previous(),MapDirection.SOUTH);
+    }
 }
