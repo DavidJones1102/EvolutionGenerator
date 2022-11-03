@@ -3,15 +3,11 @@ package agh.ics.oop;
 import java.util.ArrayList;
 
 public class RectangularMap implements IWorldMap {
-    private int width;
-    private int height;
     private ArrayList<Animal> animals = new ArrayList<>();
     private Vector2d up_right;
     private Vector2d down_left;
-    public RectangularMap(int widthGiven, int heightGiven) {
-        height = heightGiven;
-        width = widthGiven;
-        up_right = new Vector2d(this.width, this.height);
+    public RectangularMap(int width, int height) {
+        up_right = new Vector2d(width, height);
         down_left = new Vector2d(0, 0);
     }
 

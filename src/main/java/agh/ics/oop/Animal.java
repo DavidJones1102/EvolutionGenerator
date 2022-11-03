@@ -43,8 +43,6 @@ public class Animal {
         return position.equals(this.position);
     }
    public void move (MoveDirection direction){
-       Vector2d up_right = new Vector2d(4,4) ;
-       Vector2d down_left = new Vector2d(0,0) ;
        Vector2d v = orientation.toUnitVector();
 
        if( direction == MoveDirection.RIGHT )
