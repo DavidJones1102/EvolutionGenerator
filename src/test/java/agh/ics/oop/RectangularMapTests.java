@@ -39,7 +39,7 @@ public class RectangularMapTests {
 
     @Test
     public void canMoveToTest(){
-        RectangularMap map = new RectangularMap(40,30);
+        RectangularMap map = new RectangularMap(41,31);
         Animal animal1 = new Animal(map, new Vector2d(10,10));
         Animal animal2 = new Animal(map, new Vector2d(3,3));
         Animal animal3 = new Animal(map, new Vector2d(30,15));
@@ -47,11 +47,11 @@ public class RectangularMapTests {
         map.place(animal2);
         map.place(animal3);
 
-        assertFalse( map.canMoveTo(new Vector2d(30,15)));
-        assertFalse( map.canMoveTo(new Vector2d(10,10)));
-        assertFalse( map.canMoveTo(new Vector2d(3,3)));
-        assertFalse( map.canMoveTo(new Vector2d(40,40)));
-        assertFalse( map.canMoveTo(new Vector2d(-1,-1)));
+        assertFalse( map.canMoveTo(new Vector2d(30,15)) );
+        assertFalse( map.canMoveTo(new Vector2d(10,10)) );
+        assertFalse( map.canMoveTo(new Vector2d(3,3)) );
+        assertFalse( map.canMoveTo(new Vector2d(40,40)) );
+        assertFalse( map.canMoveTo(new Vector2d(-1,-1)) );
 
         assertTrue( map.canMoveTo(new Vector2d(15,30)));
         assertTrue( map.canMoveTo(new Vector2d(30,30)));
@@ -59,7 +59,7 @@ public class RectangularMapTests {
 
     @Test
     public void integralTest(){
-        RectangularMap map = new RectangularMap(5,5);
+        RectangularMap map = new RectangularMap(6,6);
         Animal animal1 = new Animal(map, new Vector2d(5,5));
         Animal animal2 = new Animal(map, new Vector2d(0,0));
         Animal animal3 = new Animal(map, new Vector2d(3,2));

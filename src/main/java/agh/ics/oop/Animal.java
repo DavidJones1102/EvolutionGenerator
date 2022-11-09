@@ -3,25 +3,14 @@ package agh.ics.oop;
 public class Animal {
     private MapDirection orientation;
     private Vector2d position;
-
     private IWorldMap map;
-    public Animal(){
-        orientation = MapDirection.NORTH;
-        position = new Vector2d(2,2);
-    }
-    public Animal( IWorldMap mapGiven){
-        orientation = MapDirection.NORTH;
-        position = new Vector2d(2,2);
-        map=mapGiven;
-    }
     public Animal(IWorldMap mapGiven, Vector2d initialPosition){
         orientation = MapDirection.NORTH;
         position = initialPosition;
         map=mapGiven;
     }
-
-    public Vector2d getPosition() {
-        return position;
+    public Animal( IWorldMap mapGiven){
+        this(mapGiven, new Vector2d(2,2));
     }
 
     public String toString(){
@@ -64,6 +53,9 @@ public class Animal {
            }
        }
 
+    }
+    public Vector2d getPosition() {
+        return position;
     }
 }
 

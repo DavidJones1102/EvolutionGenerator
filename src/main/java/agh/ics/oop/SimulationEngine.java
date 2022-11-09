@@ -1,9 +1,12 @@
 package agh.ics.oop;
 
+import java.util.ArrayList;
+
 public class SimulationEngine implements IEngine{
     private MoveDirection[] moves;
     private IWorldMap map;
     private Vector2d[] positiones;
+    private ArrayList<Animal> animals = new ArrayList<>();
     public SimulationEngine(MoveDirection[] movesGiven, IWorldMap mapGiven, Vector2d[] positionesGiven) {
         moves = movesGiven;
         map = mapGiven;
@@ -11,23 +14,25 @@ public class SimulationEngine implements IEngine{
     }
 
     public void run() {
-        int nOfAnimals = positiones.length;
+        int nOfAnimals=0;
         int currentAnimalNumber = 0;
         Vector2d currentPosition;
         Animal currentAnimal;
+        Animal animalToAdd;
+        boolean flag;
         for (Vector2d animalPosition: positiones){
-            map.place(new Animal(map,animalPosition));
-        }
-        for (MoveDirection currentMove: moves){
-            currentPosition = positiones[currentAnimalNumber];
-            if( map.isOccupied(currentPosition)){
-                currentAnimal = (Animal) map.objectAt(currentPosition);
-                currentAnimal.move(currentMove);
-                map.place(currentAnimal);
-                positiones[currentAnimalNumber] = currentAnimal.getPosition();
+            animalToAdd = new Animal(map,animalPosition);
+            flag = map.place(animalToAdd);
+            if(flag){
+                animals.add(animalToAdd);
+                nOfAnimals++;
             }
-            currentAnimalNumber = (currentAnimalNumber+1) % nOfAnimals;
+        }
 
+        for (MoveDirection currentMove: moves){
+            currentAnimal = animals.get(currentAnimalNumber);
+            currentAnimal.move(currentMove);
+            currentAnimalNumber = (currentAnimalNumber+1) % nOfAnimals;
         }
     }
 }
