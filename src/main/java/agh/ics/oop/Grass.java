@@ -1,7 +1,7 @@
 package agh.ics.oop;
 
 public class Grass {
-    private Vector2d position; //Public???
+    private Vector2d position;
     public Grass( Vector2d given_position ){
         position = given_position;
     }
