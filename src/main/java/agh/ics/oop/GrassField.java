@@ -1,25 +1,24 @@
 package agh.ics.oop;
 
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Collections;
+import java.util.Random;
+
 
 public class GrassField extends AbstractWorldMap {
-    private MapVisualizer drawer = new MapVisualizer(this);
+
     private ArrayList<Grass> grass = new ArrayList<>();
     public GrassField( int grassAmount){
-        int x;
-        int y;
-        Vector2d v;
-        for(int i=0; i<grassAmount;i++){
-            y= ThreadLocalRandom.current().nextInt(0,  (int) Math.sqrt(grassAmount*10)+1);
-            x= ThreadLocalRandom.current().nextInt(0,  (int) Math.sqrt(grassAmount*10)+1);
-            v=new Vector2d(x,y);
-            if( !grassAt(v)){
-                grass.add(new Grass(v));
+        ArrayList<Vector2d> mylist = new ArrayList<Vector2d>();
+        for(int i=0; i<=(int) Math.sqrt(grassAmount*10);i++){
+            for(int j=0; j <=(int) Math.sqrt(grassAmount*10); j++){
+                mylist.add(new Vector2d(i,j));
             }
-            else {i--;}
         }
-        //(, sqrt(n*10))
+        Collections.shuffle(mylist,new Random());
+        for ( int i=0; i<grassAmount;i++){
+            grass.add(new Grass(mylist.get(i)));
+        }
     }
     public boolean canMoveTo(Vector2d position){
         Object object = this.objectAt(position);
@@ -39,16 +38,15 @@ public class GrassField extends AbstractWorldMap {
         }
         return null;
     }
-    public boolean grassAt(Vector2d position) {
-        Object object = objectAt(position);
-        return object instanceof Grass;
-    }
 
     @Override
     public Vector2d calcUpRight() {
         Vector2d upperRight = animals.get(0).getPosition();
         for (Animal animal : animals) {
             upperRight=animal.getPosition().upperRight(upperRight);
+        }
+        for (Grass grass1 : grass) {
+            upperRight=grass1.getPosition().upperRight(upperRight);
         }
         return upperRight;
     }
@@ -58,6 +56,9 @@ public class GrassField extends AbstractWorldMap {
         Vector2d lowerLeft = animals.get(0).getPosition();
         for (Animal animal : animals) {
             lowerLeft=animal.getPosition().lowerLeft(lowerLeft);
+        }
+        for (Grass grass1 : grass) {
+            lowerLeft=grass1.getPosition().lowerLeft(lowerLeft);
         }
         return lowerLeft;
     }
