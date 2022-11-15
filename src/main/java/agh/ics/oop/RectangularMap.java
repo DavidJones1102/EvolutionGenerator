@@ -12,14 +12,6 @@ public class RectangularMap extends AbstractWorldMap{
     public boolean canMoveTo(Vector2d position) {
         return  position.precedes(upRight) && position.follows(lowerLeft) && !this.isOccupied(position) ;
     }
-    public Object objectAt(Vector2d position) {
-        for (Animal animal : animals) {
-            if (animal.isAt(position)) {
-                return animal;
-            }
-        }
-        return null;
-    }
 
     //public String toString(){
     //    return drawer.draw(lowerLeft, upRight);
