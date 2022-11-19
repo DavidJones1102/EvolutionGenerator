@@ -13,10 +13,6 @@ public class RectangularMap extends AbstractWorldMap{
         return  position.precedes(upRight) && position.follows(lowerLeft) && !this.isOccupied(position) ;
     }
 
-    //public String toString(){
-    //    return drawer.draw(lowerLeft, upRight);
-    //}
-
     @Override
     public Vector2d calcLowerLeft() { return lowerLeft; }
 

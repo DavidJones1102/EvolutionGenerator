@@ -12,6 +12,10 @@ enum MapDirection{
     EAST ,
     SOUTH ,
     WEST ;
+    private final Vector2d vn = new Vector2d(0,1);
+    private final Vector2d ve = new Vector2d(1,0);
+    private final Vector2d vs = new Vector2d(0,-1);
+    private final Vector2d vw = new Vector2d(-1,0);
 
     public String toString( MapDirection el){
         switch (this){
@@ -32,10 +36,10 @@ enum MapDirection{
 
     public Vector2d toUnitVector() { //!zrobić lepiej, tylko zwracać
         switch (this){
-            case NORTH: return new Vector2d(0,1);
-            case EAST: return new Vector2d(1,0);
-            case SOUTH: return new Vector2d(0,-1);
-            case WEST: return new Vector2d(-1,0);
+            case NORTH: return vn;
+            case EAST: return ve;
+            case SOUTH: return vs;
+            case WEST: return vw;
             default: return null;
         }
     }

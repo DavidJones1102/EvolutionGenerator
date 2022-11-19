@@ -16,7 +16,7 @@ public class GrassField extends AbstractWorldMap {
         }
         Collections.shuffle(mylist,new Random());
         for ( int i=0; i<grassAmount;i++){
-            elements.add(new Grass(mylist.get(i)));
+            elements.put(mylist.get(i),(IMapElement) new Grass(mylist.get(i)));
         }
     }
     public boolean canMoveTo(Vector2d position){
@@ -26,19 +26,17 @@ public class GrassField extends AbstractWorldMap {
 
     @Override
     public Vector2d calcUpRight() {
-        Vector2d upperRight = elements.get(0).getPosition();
-        for (AbstractMapElement element : elements) {
-            upperRight=element.getPosition().upperRight(upperRight);
+        Vector2d upperRight = (Vector2d) elements.keySet().toArray()[0];
+        for (Vector2d element : elements.keySet()) {
+            upperRight=element.upperRight(upperRight);
         }
-
         return upperRight;
     }
-
     @Override
     public Vector2d calcLowerLeft() {
-        Vector2d lowerLeft = elements.get(0).getPosition();
-        for (AbstractMapElement element : elements) {
-            lowerLeft=element.getPosition().lowerLeft(lowerLeft);
+        Vector2d lowerLeft = (Vector2d) elements.keySet().toArray()[0];
+        for (Vector2d element : elements.keySet()) {
+            lowerLeft=element.lowerLeft(lowerLeft);
         }
         return lowerLeft;
     }

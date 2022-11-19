@@ -16,7 +16,7 @@ public class SimulationEngine implements IEngine{
     public void run() {
         int nOfAnimals=0;
         int currentAnimalNumber = 0;
-        Vector2d currentPosition;
+
         Animal currentAnimal;
         Animal animalToAdd;
         boolean flag;
