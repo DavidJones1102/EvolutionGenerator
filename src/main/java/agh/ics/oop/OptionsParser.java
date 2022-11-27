@@ -1,7 +1,7 @@
 package agh.ics.oop;
 
 public class OptionsParser {
-    public static MoveDirection[] parse(String[] table) {
+    public static MoveDirection[] parse(String[] table) throws IllegalArgumentException{
         int length = 0;
         for (String s : table) {
             if (s.equals("f") || s.equals("b") || s.equals("r") || s.equals("l") ||
@@ -35,7 +35,7 @@ public class OptionsParser {
                     curr_index++;
                     break;
                 default:
-                    break;
+                    throw new IllegalArgumentException(el + " is not legal move specification");
             }
         }
         return tab_enum;

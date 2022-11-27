@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("application")
+    id("org.openjfx.javafxplugin") version "0.0.13"
 }
 application {
     getMainClass().set("agh.ics.oop.World")
@@ -16,8 +17,12 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
-}
 
+}
+javafx {
+    version = "17"
+    modules( "javafx.controls" )
+}
 dependencies {
     //implementation("org.testng:testng:7.1.0")
     implementation("org.junit.jupiter:junit-jupiter:5.8.1")

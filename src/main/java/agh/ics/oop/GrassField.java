@@ -6,7 +6,7 @@ import java.util.Random;
 
 
 public class GrassField extends AbstractWorldMap {
-
+    public MapBoundary mapBoundary= new MapBoundary();
     public GrassField( int grassAmount){
         ArrayList<Vector2d> mylist = new ArrayList<Vector2d>();
         for(int i=0; i<=(int) Math.sqrt(grassAmount*10);i++){
@@ -16,28 +16,26 @@ public class GrassField extends AbstractWorldMap {
         }
         Collections.shuffle(mylist,new Random());
         for ( int i=0; i<grassAmount;i++){
-            elements.put(mylist.get(i),(IMapElement) new Grass(mylist.get(i)));
+            Grass grassToAdd = new Grass(mylist.get(i));
+            elements.put(mylist.get(i), grassToAdd);
+            mapBoundary.addElement(grassToAdd);
         }
     }
     public boolean canMoveTo(Vector2d position){
         Object object = this.objectAt(position);
         return object==null || object instanceof Grass;
     }
-
+    public boolean place(Animal animal) {
+        mapBoundary.addElement(animal);
+        animal.addObserver(mapBoundary);
+        return super.place(animal);
+    }
     @Override
     public Vector2d calcUpRight() {
-        Vector2d upperRight = (Vector2d) elements.keySet().toArray()[0];
-        for (Vector2d element : elements.keySet()) {
-            upperRight=element.upperRight(upperRight);
-        }
-        return upperRight;
+        return mapBoundary.calcUpRight();
     }
     @Override
     public Vector2d calcLowerLeft() {
-        Vector2d lowerLeft = (Vector2d) elements.keySet().toArray()[0];
-        for (Vector2d element : elements.keySet()) {
-            lowerLeft=element.lowerLeft(lowerLeft);
-        }
-        return lowerLeft;
+        return mapBoundary.calcLowerLeft();
     }
 }
