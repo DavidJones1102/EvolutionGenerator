@@ -9,10 +9,10 @@ public class MapBoundary implements IPositionChangeObserver{
     private TreeSet<PosType> axisX = new TreeSet<>(new VectorXComparator());
     private TreeSet<PosType> axisY = new TreeSet<>(new VectorYComparator());
     public Vector2d calcUpRight(){
-        return new Vector2d(axisX.last().position.x, axisY.last().position.y);
+        return axisX.last().position.upperRight(axisY.last().position);
     }
     public Vector2d calcLowerLeft(){
-        return new Vector2d(axisX.first().position.x, axisY.first().position.y);
+        return axisX.first().position.lowerLeft(axisY.first().position);
     }
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition){
         this.removeElement(new PosType(oldPosition,1));
@@ -35,8 +35,8 @@ public class MapBoundary implements IPositionChangeObserver{
         axisY.remove(element);
     }
     private class PosType{
-        Vector2d position;
-        int id;
+        final Vector2d position;
+        final int id;
         public PosType(IMapElement element){
             position = element.getPosition();
             if( element instanceof Animal){

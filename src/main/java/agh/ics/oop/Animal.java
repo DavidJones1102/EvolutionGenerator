@@ -67,5 +67,27 @@ public class Animal extends AbstractMapElement{
             observer.positionChanged(oldPosition, newPosition);
         }
     }
+
+    @Override
+    public String getLabel() {
+        return "Animal";
+    }
+
+    @Override
+    public String getImage() {
+        if (orientation==MapDirection.NORTH){
+            return "src/main/resources/up.png";
+        }
+        else if (orientation==MapDirection.EAST){
+            return "src/main/resources/right.png";
+        }
+        else if (orientation==MapDirection.WEST){
+            return "src/main/resources/down.png";
+        }
+        else if (orientation==MapDirection.SOUTH){
+            return "src/main/resources/left.png";
+        }
+        return "";
+    }
 }
 

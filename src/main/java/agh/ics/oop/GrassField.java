@@ -26,9 +26,10 @@ public class GrassField extends AbstractWorldMap {
         return object==null || object instanceof Grass;
     }
     public boolean place(Animal animal) {
+        super.place(animal);
         mapBoundary.addElement(animal);
         animal.addObserver(mapBoundary);
-        return super.place(animal);
+        return true;
     }
     @Override
     public Vector2d calcUpRight() {

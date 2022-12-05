@@ -10,4 +10,13 @@ public class Grass extends AbstractMapElement{
         return "*";
     }
 
+    @Override
+    public String getLabel() {
+        return "Grass";
+    }
+
+    @Override
+    public String getImage() {
+        return "src/main/resources/grass.png";
+    }
 }
