@@ -10,7 +10,7 @@ public class MapBoundary implements IPositionChangeObserver{
     private TreeSet<PosType> axisY = new TreeSet<>(new VectorYComparator());
     public Vector2d calcUpRight(){
         return axisX.last().position.upperRight(axisY.last().position);
-    }
+    }//co jeśli brak elementów?
     public Vector2d calcLowerLeft(){
         return axisX.first().position.lowerLeft(axisY.first().position);
     }

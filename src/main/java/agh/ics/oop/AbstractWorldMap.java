@@ -35,11 +35,4 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
         elements.remove(oldPosition, (IMapElement) animal );
         elements.put(newPosition, animal);
     }
-    public void subscribeAll(IPositionChangeObserver observer){
-        for(IMapElement el: elements.values()){
-            if(el instanceof Animal){
-                ((Animal) el).addObserver(observer);
-            }
-        }
-    }
 }

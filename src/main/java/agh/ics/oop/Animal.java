@@ -6,6 +6,11 @@ public class Animal extends AbstractMapElement{
     private ArrayList<IPositionChangeObserver> observers = new ArrayList<>();
     private MapDirection orientation;
     private IWorldMap map;
+    private int energy;
+    private int grassEaten=0;
+    private int childrenCount=0;
+    private int age=0;
+
     public Animal(IWorldMap mapGiven, Vector2d initialPosition){
         orientation = MapDirection.NORTH;
         position = initialPosition;

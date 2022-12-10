@@ -36,7 +36,11 @@ public class SimulationEngine implements IEngine, Runnable{
     }
 
 
-
+    public void subscribeAll(IPositionChangeObserver observer){
+        for(Animal animal: animals){
+            animal.addObserver(observer);
+        }
+    }
     public void run() {
         try{
             int currentAnimalNumber = 0;
@@ -50,7 +54,7 @@ public class SimulationEngine implements IEngine, Runnable{
             }
         }
         catch (InterruptedException exception){
-            System.exit(0);
+            return;
         }
 
     }

@@ -2,7 +2,6 @@ package agh.ics.oop.gui;
 
 import agh.ics.oop.*;
 import javafx.application.*;
-import javafx.concurrent.Task;
 import javafx.geometry.HPos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
@@ -15,10 +14,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-
 public class App extends Application implements IPositionChangeObserver {
     private AbstractWorldMap map;
     private Stage stage;
@@ -28,11 +23,11 @@ public class App extends Application implements IPositionChangeObserver {
     private GridPane gridPane = new GridPane();
     private TextField textField = new TextField ();
     @Override
-    public void init() throws Exception {
+    public void init() {
         map = new GrassField(10);
         Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
         engine = new SimulationEngine(map, positions);
-        map.subscribeAll(this);
+        engine.subscribeAll(this);
         simulationThread = new Thread(engine);
 
         VBox vBox = new VBox(new Label("Direction:"),  textField);
@@ -45,17 +40,14 @@ public class App extends Application implements IPositionChangeObserver {
         stage = primaryStage;
 
         startButton.setOnAction( actionEvent->{
-
             MoveDirection[] directions = new OptionsParser().parse(textField.getText().split(" "));
             engine.setDirection(directions);
             this.simulationThread.start();
-            draw(primaryStage);
         });
 
         Scene scene = new Scene(gridPane, 400, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
-
     }
     private void draw(Stage stage){
         GridPane gridPane = new GridPane();
@@ -105,6 +97,6 @@ public class App extends Application implements IPositionChangeObserver {
 
     @Override
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
-        Platform.runLater(()->draw(stage));
+        Platform.runLater( ()->draw(stage) );
     }
 }
