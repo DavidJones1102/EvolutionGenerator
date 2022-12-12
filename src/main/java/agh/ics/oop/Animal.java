@@ -10,9 +10,9 @@ public class Animal extends AbstractMapElement{
     private int grassEaten=0;
     private int childrenCount=0;
     private int age=0;
-
+    private Genotype genotype = new Genotype(45);
     public Animal(IWorldMap mapGiven, Vector2d initialPosition){
-        orientation = MapDirection.NORTH;
+        orientation = MapDirection.values()[(int) (Math.random()*7+0.1)];
         position = initialPosition;
         map=mapGiven;
     }
@@ -21,21 +21,23 @@ public class Animal extends AbstractMapElement{
     }
 
     public String toString(){
-        if (orientation==MapDirection.NORTH){
-            return "N";
-        }
-        else if (orientation==MapDirection.EAST){
-            return "E";
-        }
-        else if (orientation==MapDirection.WEST){
-            return "W";
-        }
-        else if (orientation==MapDirection.SOUTH){
-            return "S";
-        }
-        return "";
+        return orientation.toString();
     }
 
+    public void move (){
+        int gene = genotype.getGene();
+        for( int i = 0; i<gene; i++){
+            orientation=orientation.next();
+        }
+
+        Vector2d v = orientation.toUnitVector();
+        Vector2d new_position = position.add( v );
+        if( map.canMoveTo(new_position)){
+            this.positionChanged(this.getPosition(),new_position);
+            position = new_position;
+        }
+        age++;
+    }
    public void move (MoveDirection direction){
        Vector2d v = orientation.toUnitVector();
 
@@ -80,19 +82,7 @@ public class Animal extends AbstractMapElement{
 
     @Override
     public String getImage() {
-        if (orientation==MapDirection.NORTH){
-            return "src/main/resources/up.png";
-        }
-        else if (orientation==MapDirection.EAST){
-            return "src/main/resources/right.png";
-        }
-        else if (orientation==MapDirection.WEST){
-            return "src/main/resources/down.png";
-        }
-        else if (orientation==MapDirection.SOUTH){
-            return "src/main/resources/left.png";
-        }
-        return "";
+        return "src/main/resources/up.png";
     }
 }
 

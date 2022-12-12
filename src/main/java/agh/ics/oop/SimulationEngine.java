@@ -46,9 +46,9 @@ public class SimulationEngine implements IEngine, Runnable{
             int currentAnimalNumber = 0;
             Animal currentAnimal;
 
-            for (MoveDirection currentMove: moves){
+            while (true){
                 currentAnimal = animals.get(currentAnimalNumber);
-                currentAnimal.move(currentMove);
+                currentAnimal.move();
                 currentAnimalNumber = (currentAnimalNumber+1) % nOfAnimals;
                 Thread.sleep(300);
             }

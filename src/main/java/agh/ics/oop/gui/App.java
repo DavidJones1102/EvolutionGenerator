@@ -7,7 +7,9 @@ import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -19,53 +21,73 @@ public class App extends Application implements IPositionChangeObserver {
     private Stage stage;
     private SimulationEngine engine;
     private Thread simulationThread;
-    private Button startButton = new Button("Start");
+    private Button button = new Button("Start");
+
+    private boolean buttonFlag = true;
     private GridPane gridPane = new GridPane();
     private TextField textField = new TextField ();
     @Override
     public void init() {
-        map = new GrassField(10);
+       //map = new GrassField(10);
+        map = new Jungle(10,10,30);
         Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
         engine = new SimulationEngine(map, positions);
         engine.subscribeAll(this);
-        simulationThread = new Thread(engine);
 
-        VBox vBox = new VBox(new Label("Direction:"),  textField);
-        gridPane.add(startButton,1,1);
-        gridPane.add(vBox,2,1);
     }
 
     @Override
     public void start(Stage primaryStage){
         stage = primaryStage;
-
-        startButton.setOnAction( actionEvent->{
-            MoveDirection[] directions = new OptionsParser().parse(textField.getText().split(" "));
-            engine.setDirection(directions);
-            this.simulationThread.start();
-        });
-
-        Scene scene = new Scene(gridPane, 400, 400);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        draw(stage);
     }
     private void draw(Stage stage){
+        GridPane rootPane = new GridPane();
         GridPane gridPane = new GridPane();
-//        gridPane.getColumnConstraints().add(new ColumnConstraints(500));
-//        gridPane.getRowConstraints().add(new RowConstraints(500));
+        GridPane buttonPane = new GridPane();
+
+
+
+        if(buttonFlag){
+            button.setOnAction( actionEvent->{
+                simulationThread = new Thread(engine);
+                this.simulationThread.start();
+                buttonFlag = !buttonFlag;
+                button.setText("Stop");
+                draw(stage);
+            });
+
+        }
+        else {
+            button.setOnAction( actionEvent->{
+                simulationThread.interrupt();
+                buttonFlag = !buttonFlag;
+                button.setText("Start");
+                draw(stage);
+            });
+        }
+        buttonPane.add(button,0,0);
+
+        rootPane.add(gridPane,0,0);
+        rootPane.add(buttonPane,0,1);
+
         gridPane.setGridLinesVisible(true);
         Vector2d lowerLeft = map.calcLowerLeft();
         Vector2d upperRight = map.calcUpRight();
         for(int i=lowerLeft.x+1 ;i<=upperRight.x+1;i++){
+            gridPane.getColumnConstraints().add(new ColumnConstraints(50));
             Text toAdd = new Text(Integer.toString(i-1));
             gridPane.add(toAdd,i,0);
             GridPane.setHalignment(toAdd, HPos.CENTER);
         }
         for(int i=lowerLeft.y ;i<=upperRight.y;i++){
+            gridPane.getRowConstraints().add(new RowConstraints(50));
             Text toAdd = new Text(Integer.toString(i));
-            gridPane.add(toAdd,0,upperRight.y+2-i);
+            gridPane.add(toAdd,0,upperRight.y+1-i);
             GridPane.setHalignment(toAdd, HPos.CENTER);
         }
+        gridPane.getColumnConstraints().add(new ColumnConstraints(50));
+        gridPane.getRowConstraints().add(new RowConstraints(50));
         Text xy = new Text("x\\y");
         gridPane.add(xy,0,0);
         GridPane.setHalignment(xy, HPos.CENTER);
@@ -75,21 +97,15 @@ public class App extends Application implements IPositionChangeObserver {
                 IMapElement el = (IMapElement) map.objectAt(new Vector2d(i,j));
                 Text toAdd = new Text();
                 VBox vbox;
-                toAdd.setText("\n   ");
-                if(el==null){
-                    vbox = new VBox(toAdd);
-                    toAdd.setFont(Font.font ("arial", 24));
-                }
-                else {
+                if(el!=null){
                     vbox = new VBox( new GuiElementBox(el).getVbox() );
+                    gridPane.add(vbox,i+1,upperRight.y+1-j);
                 }
 
-                gridPane.add(vbox,i+1,upperRight.y+2-j);
-                //GridPane.setHalignment(toAdd, HPos.CENTER);
             }
         }
 
-        Scene scene = new Scene(gridPane, 400, 400);
+        Scene scene = new Scene(rootPane, 800, 800);
         stage.setScene(scene);
         stage.show();
 
@@ -98,5 +114,6 @@ public class App extends Application implements IPositionChangeObserver {
     @Override
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
         Platform.runLater( ()->draw(stage) );
+        System.out.println(map);
     }
 }

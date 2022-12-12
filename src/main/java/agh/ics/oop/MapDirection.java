@@ -19,23 +19,23 @@ public enum MapDirection{
 
     public String toString(){
         switch (this){
-            case NORTH: return "↑";
-            case SOUTH: return "↓";
-            case WEST: return "←";
-            case EAST: return "→";
-            case NORTHWEST: return "↖";
-            case SOUTHWEST: return "↙";
-            case NORTHEAST: return "↗";
-            case SOUTHEAST: return "↘";
+            case NORTH: return "N";
+            case SOUTH: return "S";
+            case WEST: return "W";
+            case EAST: return "E";
+            case NORTHWEST: return "NW";
+            case SOUTHWEST: return "SW";
+            case NORTHEAST: return "NE";
+            case SOUTHEAST: return "SE";
             default: return null;
         }
 
     }
     public MapDirection next( ){
-        return this.values()[ (this.ordinal()+1)%4 ];
+        return this.values()[ (this.ordinal()+1)%8 ];
     }
     public MapDirection previous( ){
-        return this.values()[ (this.ordinal()+3)%4 ];
+        return this.values()[ (this.ordinal()+3)%8 ];
     }
 
     public Vector2d toUnitVector() {
