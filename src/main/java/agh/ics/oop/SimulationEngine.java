@@ -3,25 +3,17 @@ package agh.ics.oop;
 import java.util.ArrayList;
 
 public class SimulationEngine implements IEngine, Runnable{
-    private MoveDirection[] moves;
-    private IWorldMap map;
+    private AbstractWorldMap map;
     private Vector2d[] positiones;
     private ArrayList<Animal> animals = new ArrayList<>();
     private int nOfAnimals=0;
-    public SimulationEngine(MoveDirection[] movesGiven, IWorldMap mapGiven, Vector2d[] positionesGiven) {
-        moves = movesGiven;
+
+    public SimulationEngine(AbstractWorldMap mapGiven, Vector2d[] positionesGiven) {
         map = mapGiven;
         positiones = positionesGiven;
         placeAnimals();
     }
-    public SimulationEngine(IWorldMap mapGiven, Vector2d[] positionesGiven) {
-        map = mapGiven;
-        positiones = positionesGiven;
-        placeAnimals();
-    }
-    public void setDirection(MoveDirection[] movesGiven){
-        moves = movesGiven;
-    }
+
     private void placeAnimals( ){
         boolean flag;
         Animal animalToAdd;
@@ -54,8 +46,11 @@ public class SimulationEngine implements IEngine, Runnable{
             while (true){
                 currentAnimal = animals.get(currentAnimalNumber);
                 currentAnimal.move();
+                if(currentAnimalNumber==nOfAnimals-1){ //koniec dnia
+                    map.endOfADay();
+                    Thread.sleep(300);
+                }
                 currentAnimalNumber = (currentAnimalNumber+1) % nOfAnimals;
-                Thread.sleep(300);
             }
         }
         catch (InterruptedException exception){

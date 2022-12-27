@@ -12,7 +12,8 @@ public class Jungle extends AbstractWorldMap {
     private int equatorEnd;
     private int width;
     private int height;
-    public Jungle( int widthGiven, int heightGiven, int grassAmount){
+    public Jungle( int widthGiven, int heightGiven, int grassAmount, int grassProfitGiven){
+       grassProfit = grassProfitGiven;
        width = widthGiven;
        height = heightGiven;
        upperRight = new Vector2d(width-1,height-1);

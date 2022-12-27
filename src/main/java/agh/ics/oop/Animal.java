@@ -62,7 +62,6 @@ public class Animal extends AbstractMapElement{
                position = new_position;
            }
        }
-
     }
     public void addObserver(IPositionChangeObserver observer){
          observers.add(observer);
@@ -74,6 +73,18 @@ public class Animal extends AbstractMapElement{
         for(IPositionChangeObserver observer: observers){
             observer.positionChanged(oldPosition, newPosition, this);
         }
+    }
+    public void addEnergy(int energyToAdd){
+        energy+=energyToAdd;
+    }
+    public int getEnergy() {
+        return energy;
+    }
+    public int getAge(){
+        return age;
+    }
+    public int getChildrenCount() {
+        return childrenCount;
     }
 
     @Override

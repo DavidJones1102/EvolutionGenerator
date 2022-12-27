@@ -3,12 +3,14 @@ package agh.ics.oop;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     protected MapVisualizer drawer = new MapVisualizer(this);
     protected Map<Vector2d, LinkedList<Animal>> animals = new HashMap<>();
     protected Map<Vector2d, Grass> grass = new HashMap<>();
+    protected int grassProfit;
     abstract public Vector2d calcUpRight();
     abstract public Vector2d calcLowerLeft();
     abstract public boolean canMoveTo(Vector2d position);
@@ -62,5 +64,47 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition, Animal animal){
         this.removeAnimal(oldPosition,animal);
         this.addAnimal(newPosition, animal);
+    }
+    private boolean compareAnimals(Animal temporaryTheStrongest,Animal animal){
+        int energyDiff = temporaryTheStrongest.getEnergy() - animal.getEnergy();
+        int ageDiff = temporaryTheStrongest.getAge() - animal.getAge();
+        int childDiff = temporaryTheStrongest.getChildrenCount() - animal.getChildrenCount();
+        if (energyDiff < 0){ return true; }
+        else if (energyDiff > 0){ return false; }
+        else if (ageDiff < 0){ return true; }
+        else if (ageDiff > 0){ return false; }
+        else if (childDiff < 0){ return true; }
+        else{ return false; }
+    }
+    private Animal strongestAnimalInList(LinkedList<Animal> animalsOnPosition){
+        Animal temporaryTheStrongest = animalsOnPosition.get(0);
+        for(Animal animal: animalsOnPosition){
+            boolean changeAnimal = compareAnimals(temporaryTheStrongest, animal);
+            if(changeAnimal){
+                temporaryTheStrongest = animal;
+            }
+        }
+        return temporaryTheStrongest;
+    }
+    public void eating(){
+        LinkedList<Grass> toRemoveAfterEating = new LinkedList<>();
+
+        for (Grass food: grass.values()){
+            Vector2d position = food.getPosition();
+            LinkedList<Animal> animalsOnPosition = animals.get(position);
+
+            if(animalsOnPosition != null){
+                toRemoveAfterEating.add(food);
+                Animal strongestAnimal = strongestAnimalInList(animalsOnPosition);
+                strongestAnimal.addEnergy(grassProfit);
+            }
+        }
+
+        for(Grass food: toRemoveAfterEating){
+            grass.remove(food.getPosition());
+        }
+    }
+    public void endOfADay(){
+        this.eating();
     }
 }

@@ -6,14 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AnimalTest {
     @Test
     public void move(){
-        Jungle map = new Jungle(5,5, 1);
-        Animal animals = new Animal(map);
-        map.place(animals);
-        assertEquals(animals.toString(), "N");
-        animals.move(MoveDirection.FORWARD);
-        assertEquals(animals.toString(), "N");
-        animals.move(MoveDirection.BACKWARD);
-        animals.move(MoveDirection.RIGHT);
+       Jungle map = new Jungle(5,5, 1, 10);
+       Animal animals = new Animal(map);
+       map.place(animals);
+       assertEquals(animals.toString(), "N");
+       animals.move(MoveDirection.FORWARD);
+       assertEquals(animals.toString(), "N");
+       animals.move(MoveDirection.BACKWARD);
+       animals.move(MoveDirection.RIGHT);
        assertEquals(animals.toString(), "E");
        animals.move(MoveDirection.FORWARD);
        assertEquals(animals.toString(), "E");

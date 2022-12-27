@@ -28,7 +28,7 @@ public class App extends Application implements IPositionChangeObserver {
     private TextField textField = new TextField ();
     @Override
     public void init() {
-        map = new Jungle(10,10,30);
+        map = new Jungle(10,10,30,10);
         Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
         engine = new SimulationEngine(map, positions);
         engine.subscribeAll(this);
