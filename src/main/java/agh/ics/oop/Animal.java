@@ -31,10 +31,11 @@ public class Animal extends AbstractMapElement{
         }
 
         Vector2d v = orientation.toUnitVector();
-        Vector2d new_position = position.add( v );
-        if( map.canMoveTo(new_position)){
-            this.positionChanged(this.getPosition(),new_position);
-            position = new_position;
+        Vector2d newPosition = position.add( v );
+        if( map.canMoveTo(newPosition)){
+            Vector2d oldPosition = position;
+            position = newPosition;
+            this.positionChanged(oldPosition,newPosition, this);
         }
         age++;
     }
@@ -49,7 +50,7 @@ public class Animal extends AbstractMapElement{
        {
            Vector2d new_position = position.add( v );
            if( map.canMoveTo(new_position)){
-               this.positionChanged(this.getPosition(),new_position);
+               this.positionChanged(this.getPosition(),new_position, this);
                position = new_position;
            }
        }
@@ -57,7 +58,7 @@ public class Animal extends AbstractMapElement{
        {
            Vector2d new_position = position.subtract( v );
            if( map.canMoveTo(new_position)){
-               this.positionChanged(this.getPosition(),new_position);
+               this.positionChanged(this.getPosition(),new_position,this);
                position = new_position;
            }
        }
@@ -69,9 +70,9 @@ public class Animal extends AbstractMapElement{
     public void removeObserver(IPositionChangeObserver observer){
         observers.remove(observer);
     }
-    private void positionChanged(Vector2d oldPosition, Vector2d newPosition){
+    private void positionChanged(Vector2d oldPosition, Vector2d newPosition, Animal animal){
         for(IPositionChangeObserver observer: observers){
-            observer.positionChanged(oldPosition, newPosition);
+            observer.positionChanged(oldPosition, newPosition, this);
         }
     }
 

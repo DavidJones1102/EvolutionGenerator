@@ -43,11 +43,11 @@ public class Jungle extends AbstractWorldMap {
         int grassInEquator = (int) (grassAmount*0.8);
         for ( int i=0; i < grassInEquator;i++){
             Grass grassToAdd = new Grass(equator.get(i));
-            elements.put(equator.get(i), grassToAdd);
+            this.placeGrass(grassToAdd);
         }
         for ( int i=0; i < grassAmount-grassInEquator;i++){
             Grass grassToAdd = new Grass(nonEquator.get(i));
-            elements.put(nonEquator.get(i), grassToAdd);
+            this.placeGrass(grassToAdd);
         }
     }
     public boolean canMoveTo(Vector2d position){

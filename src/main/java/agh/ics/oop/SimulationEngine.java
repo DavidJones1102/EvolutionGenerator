@@ -41,6 +41,11 @@ public class SimulationEngine implements IEngine, Runnable{
             animal.addObserver(observer);
         }
     }
+    public void unSubscribeAll(IPositionChangeObserver observer){
+        for(Animal animal: animals){
+            animal.removeObserver(observer);
+        }
+    }
     public void run() {
         try{
             int currentAnimalNumber = 0;

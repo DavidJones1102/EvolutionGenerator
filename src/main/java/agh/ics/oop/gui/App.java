@@ -28,7 +28,6 @@ public class App extends Application implements IPositionChangeObserver {
     private TextField textField = new TextField ();
     @Override
     public void init() {
-       //map = new GrassField(10);
         map = new Jungle(10,10,30);
         Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
         engine = new SimulationEngine(map, positions);
@@ -63,6 +62,7 @@ public class App extends Application implements IPositionChangeObserver {
                 simulationThread.interrupt();
                 buttonFlag = !buttonFlag;
                 button.setText("Start");
+
                 draw(stage);
             });
         }
@@ -112,8 +112,8 @@ public class App extends Application implements IPositionChangeObserver {
     }
 
     @Override
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition, Animal animal) {
         Platform.runLater( ()->draw(stage) );
-        System.out.println(map);
+            //System.out.println(map);
     }
 }

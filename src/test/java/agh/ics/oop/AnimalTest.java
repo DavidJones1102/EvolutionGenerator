@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AnimalTest {
     @Test
     public void move(){
-        RectangularMap map = new RectangularMap(5,5);
+        Jungle map = new Jungle(5,5, 1);
         Animal animals = new Animal(map);
         map.place(animals);
         assertEquals(animals.toString(), "N");
