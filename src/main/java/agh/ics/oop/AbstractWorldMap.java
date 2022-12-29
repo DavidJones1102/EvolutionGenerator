@@ -9,11 +9,14 @@ import java.util.Map;
 public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     protected MapVisualizer drawer = new MapVisualizer(this);
     protected Map<Vector2d, LinkedList<Animal>> animals = new HashMap<>();
+    protected int energyNeddedToCopulation = 5;
     protected Map<Vector2d, Grass> grass = new HashMap<>();
+ //   protected LinkedList<Animal> deadAnimals = new LinkedList<>();
     protected int grassProfit;
     abstract public Vector2d calcUpRight();
     abstract public Vector2d calcLowerLeft();
     abstract public boolean canMoveTo(Vector2d position);
+    abstract public Vector2d positionInBounds(Animal animal, Vector2d newPosition);
     public Object objectAt(Vector2d position){
         if (animals.get(position)!=null){
             return animals.get(position).getFirst();
@@ -86,7 +89,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
         }
         return temporaryTheStrongest;
     }
-    public void eating(){
+    private void eating(){
         LinkedList<Grass> toRemoveAfterEating = new LinkedList<>();
 
         for (Grass food: grass.values()){
@@ -97,6 +100,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
                 toRemoveAfterEating.add(food);
                 Animal strongestAnimal = strongestAnimalInList(animalsOnPosition);
                 strongestAnimal.addEnergy(grassProfit);
+                strongestAnimal.addGrassEaten();
             }
         }
 
@@ -104,7 +108,40 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
             grass.remove(food.getPosition());
         }
     }
+//    public void addDeadAnimal(Animal deadAnimal){
+//        deadAnimals.add(deadAnimal);
+//    }
+//    private void removeDeadAnimals(){
+//        for( Animal animal: deadAnimals){
+//         //   animal.removeAllObservers();
+//            removeAnimal(animal.getPosition(), animal);
+//        }
+//        deadAnimals.clear();
+//    }
+
+    private void copulationPhase(){
+        LinkedList<Animal> animalsToAdd = new LinkedList<>();
+
+        for( LinkedList<Animal> animalList: animals.values()){
+            if(animalList.size()>=2){
+                LinkedList<Animal> cloneAnimalList = (LinkedList<Animal>) animalList.clone();
+                Animal animal1 = strongestAnimalInList(cloneAnimalList);
+                cloneAnimalList.remove(animal1);
+                Animal animal2 = strongestAnimalInList(cloneAnimalList);
+                if(animal2.getEnergy()>energyNeddedToCopulation){
+                    animalsToAdd.add( new Animal(animal1,animal2) );
+                    animal1.addChild();
+                    animal2.addChild();
+                }
+            };
+        }
+        for (Animal animal: animalsToAdd){
+            place(animal);
+        }
+    }
     public void endOfADay(){
-        this.eating();
+//        removeDeadAnimals();
+        eating();
+        copulationPhase();
     }
 }

@@ -34,6 +34,12 @@ public enum MapDirection{
     public MapDirection next( ){
         return this.values()[ (this.ordinal()+1)%8 ];
     }
+    public MapDirection reverseOrientation( ){
+        return this.values()[ (this.ordinal()+4)%8 ];
+    }
+    public MapDirection changeOrientation( int turnCount ){
+        return this.values()[ (this.ordinal()+turnCount)%8 ];
+    }
     public MapDirection previous( ){
         return this.values()[ (this.ordinal()+3)%8 ];
     }

@@ -7,7 +7,9 @@ import java.util.Random;
 
 public class Jungle extends AbstractWorldMap {
     private Vector2d lowerLeft = new Vector2d(0,0);
+    private Vector2d upperLeft;
     private Vector2d upperRight;
+    private Vector2d lowerRight;
     private int equatorStart;
     private int equatorEnd;
     private int width;
@@ -17,6 +19,8 @@ public class Jungle extends AbstractWorldMap {
        width = widthGiven;
        height = heightGiven;
        upperRight = new Vector2d(width-1,height-1);
+       upperLeft = new Vector2d(0,height-1);
+       lowerRight = new Vector2d(width-1,0);
 
        int equatorHeight = (int) (height*0.2);
        equatorStart =  (int) (height/2-equatorHeight/2);
@@ -53,6 +57,21 @@ public class Jungle extends AbstractWorldMap {
     }
     public boolean canMoveTo(Vector2d position){
         return  position.precedes(upperRight) && position.follows(lowerLeft) ;
+    }
+    public Vector2d positionInBounds(Animal animal, Vector2d newPosition){
+        if(newPosition.y>=height || newPosition.y<0){
+            animal.reverseOrientation();
+            return animal.getPosition();
+        }
+        else if(newPosition.x>=width){
+            return new Vector2d(0,newPosition.y);
+        }
+        else if(newPosition.x<0){
+            return new Vector2d(width-1,newPosition.y);
+        }
+        else {
+            return newPosition;
+        }
     }
 
     @Override
