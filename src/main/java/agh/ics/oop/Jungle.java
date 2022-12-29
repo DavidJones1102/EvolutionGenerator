@@ -12,10 +12,14 @@ public class Jungle extends AbstractWorldMap {
     private Vector2d lowerRight;
     private int equatorStart;
     private int equatorEnd;
+
+    private ArrayList<Vector2d> equator = new ArrayList<Vector2d>();
+    private ArrayList<Vector2d> nonEquator = new ArrayList<Vector2d>();
     private int width;
     private int height;
     public Jungle( int widthGiven, int heightGiven, int grassAmount, int grassProfitGiven){
        grassProfit = grassProfitGiven;
+       grassDaily = 10;
        width = widthGiven;
        height = heightGiven;
        upperRight = new Vector2d(width-1,height-1);
@@ -26,8 +30,7 @@ public class Jungle extends AbstractWorldMap {
        equatorStart =  (int) (height/2-equatorHeight/2);
        equatorEnd = (int) (height/2 +equatorHeight/2);
 
-        ArrayList<Vector2d> equator = new ArrayList<Vector2d>();
-        ArrayList<Vector2d> nonEquator = new ArrayList<Vector2d>();
+
         for(int i=0; i<equatorStart;i++){
             for(int j=0; j < width; j++){
                 nonEquator.add(new Vector2d(i,j));
@@ -43,16 +46,39 @@ public class Jungle extends AbstractWorldMap {
                 equator.add(new Vector2d(i,j));
             }
         }
+        spawnGrass(grassAmount);
+
+    }
+    public void spawnGrass(int grassAmount){
         Collections.shuffle(equator,new Random());
         Collections.shuffle(nonEquator,new Random());
         int grassInEquator = (int) (grassAmount*0.8);
-        for ( int i=0; i < grassInEquator;i++){
-            Grass grassToAdd = new Grass(equator.get(i));
-            this.placeGrass(grassToAdd);
+        for ( int i=0, j=0; i < grassInEquator;i++){
+            if(grass.get(equator.get(i+j))==null){
+                Grass grassToAdd = new Grass(equator.get(i));
+                this.placeGrass(grassToAdd);
+            }
+            else {
+                j++;
+                i--;
+                if(i+j<=equator.size()){
+                    break;
+                }
+            }
+
         }
-        for ( int i=0; i < grassAmount-grassInEquator;i++){
-            Grass grassToAdd = new Grass(nonEquator.get(i));
-            this.placeGrass(grassToAdd);
+        for ( int i=0,j=0; i < grassAmount-grassInEquator;i++){
+            if(grass.get(nonEquator.get(i+j))==null){
+                Grass grassToAdd = new Grass(nonEquator.get(i));
+                this.placeGrass(grassToAdd);
+            }
+            else {
+                j++;
+                i--;
+                if(i+j<=nonEquator.size()){
+                    break;
+                }
+            }
         }
     }
     public boolean canMoveTo(Vector2d position){

@@ -58,7 +58,7 @@ public class SimulationEngine implements IEngine, Runnable{
                 currentAnimal.move();
                 if(currentAnimalNumber==nOfAnimals-1){ //koniec dnia
                     map.endOfADay();
-                    Thread.sleep(500);
+                    Thread.sleep(2000);
                 }
                 if(currentAnimal.getEnergy()<=0){
                     animals.remove(currentAnimal);

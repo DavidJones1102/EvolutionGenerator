@@ -9,14 +9,16 @@ import java.util.Map;
 public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     protected MapVisualizer drawer = new MapVisualizer(this);
     protected Map<Vector2d, LinkedList<Animal>> animals = new HashMap<>();
-    protected int energyNeddedToCopulation = 5;
+    protected int energyNeddedToCopulation = 20;
     protected Map<Vector2d, Grass> grass = new HashMap<>();
- //   protected LinkedList<Animal> deadAnimals = new LinkedList<>();
+    protected LinkedList<Animal> deadAnimals = new LinkedList<>();
     protected int grassProfit;
+    protected int grassDaily;
     abstract public Vector2d calcUpRight();
     abstract public Vector2d calcLowerLeft();
     abstract public boolean canMoveTo(Vector2d position);
     abstract public Vector2d positionInBounds(Animal animal, Vector2d newPosition);
+    abstract public void spawnGrass(int grassAmount);
     public Object objectAt(Vector2d position){
         if (animals.get(position)!=null){
             return animals.get(position).getFirst();
@@ -108,16 +110,16 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
             grass.remove(food.getPosition());
         }
     }
-//    public void addDeadAnimal(Animal deadAnimal){
-//        deadAnimals.add(deadAnimal);
-//    }
-//    private void removeDeadAnimals(){
-//        for( Animal animal: deadAnimals){
-//         //   animal.removeAllObservers();
-//            removeAnimal(animal.getPosition(), animal);
-//        }
-//        deadAnimals.clear();
-//    }
+    public void addDeadAnimal(Animal deadAnimal){
+        deadAnimals.add(deadAnimal);
+    }
+   private void removeDeadAnimals(){
+       for( Animal animal: deadAnimals){
+           animal.removeAllObservers();
+           removeAnimal(animal.getPosition(), animal);
+       }
+       deadAnimals.clear();
+   }
 
     private void copulationPhase(){
         LinkedList<Animal> animalsToAdd = new LinkedList<>();
@@ -140,8 +142,9 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
         }
     }
     public void endOfADay(){
-//        removeDeadAnimals();
+        removeDeadAnimals();
         eating();
         copulationPhase();
+        this.spawnGrass(grassDaily);
     }
 }

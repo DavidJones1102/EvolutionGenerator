@@ -56,7 +56,7 @@ public class Animal extends AbstractMapElement{
         age++;
         energy--;
         if(energy <= 0){
- //           map.addDeadAnimal(this);
+            map.addDeadAnimal(this);
         }
     }
     public void addObserver(IPositionChangeObserver observer){
@@ -66,9 +66,7 @@ public class Animal extends AbstractMapElement{
         observers.remove(observer);
     }
     public void removeAllObservers(){
-        for(IPositionChangeObserver observer: observers){
-            this.removeObserver(observer);
-        }
+        observers.clear();
     }
     private void positionChanged(Vector2d oldPosition, Vector2d newPosition, Animal animal){
         for(IPositionChangeObserver observer: observers){
