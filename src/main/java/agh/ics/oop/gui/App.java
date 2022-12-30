@@ -9,6 +9,8 @@ import agh.ics.oop.Maps.Jungle;
 import agh.ics.oop.Simulation.SimulationEngine;
 import javafx.application.*;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -30,19 +32,41 @@ public class App extends Application implements IPositionChangeObserver {
     private boolean buttonFlag = true;
     private GridPane gridPane = new GridPane();
     private TextField textField = new TextField ();
+
     @Override
     public void init() {
-        map = new Jungle(10,10,30,10);
-        Vector2d[] positions = { new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2),    new Vector2d(3,4) };
-        engine = new SimulationEngine(map, positions);
-        engine.subscribeAll(this);
-
     }
 
     @Override
     public void start(Stage primaryStage){
+        GridPane gridPane = new GridPane();
+        button.setAlignment(Pos.CENTER);
         stage = primaryStage;
-        draw(stage);
+
+        Settings settings = new Settings(800, 100 );
+
+        button.setOnAction( actionEvent->{
+            map = new Jungle(10,10,30,10);
+            Vector2d[] positions = { new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2),    new Vector2d(3,4) };
+            engine = new SimulationEngine(map, positions);
+            engine.subscribeAll(this);
+            simulationThread = new Thread(engine);
+            this.simulationThread.start();
+            buttonFlag = !buttonFlag;
+            button.setText("Stop");
+            draw(stage);
+        });
+
+        VBox buttonVBox = new VBox(button);
+        buttonVBox.setAlignment(Pos.CENTER);
+        buttonVBox.setPadding(new Insets(16));
+        gridPane.add(settings,1,1);
+        gridPane.add(buttonVBox,1,2);
+        Scene scene = new Scene(gridPane, 800, 800);
+        stage.setScene(scene);
+        stage.show();
+
+        //draw(stage);
     }
     private void draw(Stage stage){
         GridPane rootPane = new GridPane();
@@ -118,6 +142,5 @@ public class App extends Application implements IPositionChangeObserver {
     @Override
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition, Animal animal) {
         Platform.runLater( ()->draw(stage) );
-            //System.out.println(map);
     }
 }
