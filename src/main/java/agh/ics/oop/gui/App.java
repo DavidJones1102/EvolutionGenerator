@@ -1,17 +1,21 @@
 package agh.ics.oop.gui;
 
-import agh.ics.oop.*;
+import agh.ics.oop.Interfaces.IPositionChangeObserver;
+import agh.ics.oop.MapElementsValues.Vector2d;
+import agh.ics.oop.MapElements.Animal;
+import agh.ics.oop.Interfaces.IMapElement;
+import agh.ics.oop.Maps.AbstractWorldMap;
+import agh.ics.oop.Maps.Jungle;
+import agh.ics.oop.Simulation.SimulationEngine;
 import javafx.application.*;
 import javafx.geometry.HPos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -29,7 +33,7 @@ public class App extends Application implements IPositionChangeObserver {
     @Override
     public void init() {
         map = new Jungle(10,10,30,10);
-        Vector2d[] positions = { new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2), new Vector2d(3,4) };
+        Vector2d[] positions = { new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2),    new Vector2d(3,4) };
         engine = new SimulationEngine(map, positions);
         engine.subscribeAll(this);
 

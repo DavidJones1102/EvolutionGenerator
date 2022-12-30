@@ -1,5 +1,8 @@
 package agh.ics.oop;
 
+import agh.ics.oop.MapElementsValues.MoveDirection;
+import agh.ics.oop.MapElements.Animal;
+import agh.ics.oop.Maps.Jungle;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
