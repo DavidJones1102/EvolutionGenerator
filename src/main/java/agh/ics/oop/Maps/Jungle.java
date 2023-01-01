@@ -3,6 +3,7 @@ package agh.ics.oop.Maps;
 import agh.ics.oop.MapElements.Animal;
 import agh.ics.oop.MapElements.Grass;
 import agh.ics.oop.MapElementsValues.Vector2d;
+import agh.ics.oop.gui.Settings;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,11 +22,11 @@ public class Jungle extends AbstractWorldMap {
     private ArrayList<Vector2d> nonEquator = new ArrayList<Vector2d>();
     private int width;
     private int height;
-    public Jungle( int widthGiven, int heightGiven, int grassAmount, int grassProfitGiven){
-       grassProfit = grassProfitGiven;
-       grassDaily = 10;
-       width = widthGiven;
-       height = heightGiven;
+    public Jungle(Settings settings){
+       grassProfit = settings.energyFromGrass;
+       grassDaily = settings.dailyGrassAmount;
+       width = settings.mapWidth;
+       height = settings.mapHeight;
        upperRight = new Vector2d(width-1,height-1);
        upperLeft = new Vector2d(0,height-1);
        lowerRight = new Vector2d(width-1,0);
@@ -50,7 +51,7 @@ public class Jungle extends AbstractWorldMap {
                 equator.add(new Vector2d(i,j));
             }
         }
-        spawnGrass(grassAmount);
+        spawnGrass(settings.startingGrassAmount);
 
     }
     public void spawnGrass(int grassAmount){

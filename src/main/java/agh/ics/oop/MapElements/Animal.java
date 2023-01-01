@@ -17,15 +17,15 @@ public class Animal extends AbstractMapElement {
     private int childrenCount=0;
     private int age=0;
     private Genotype genotype;
-    public Animal(AbstractWorldMap mapGiven, Vector2d initialPosition, int initialEnergy){
+    public Animal(AbstractWorldMap mapGiven, Vector2d initialPosition, int initialEnergy, int genomeSize){
         orientation = MapDirection.values()[(int) (Math.random()*7+0.1)];
         position = initialPosition;
         map=mapGiven;
         energy=initialEnergy;
-        genotype = new Genotype(45);
+        genotype = new Genotype(genomeSize);
     }
     public Animal( AbstractWorldMap mapGiven){
-        this(mapGiven, new Vector2d(2,2),10);
+        this(mapGiven, new Vector2d(2,2),10,10);
     }
     public Animal(Animal animal1, Animal animal2){
         orientation = MapDirection.values()[(int) (Math.random()*7+0.1)];

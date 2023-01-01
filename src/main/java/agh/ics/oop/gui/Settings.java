@@ -13,19 +13,28 @@ public class Settings extends VBox {
 
 
     public int mapHeight;//
+    private NumberTextField heightInput;
     public int mapWidth;//
-    public boolean mapVariant;//
+    private NumberTextField widthInput;
     public int startingGrassAmount;//
+    private NumberTextField startingGrassAmountInput;
     public int energyFromGrass;//
+    private NumberTextField energyFromGrassInput;
     public int dailyGrassAmount;//
+    private NumberTextField dailyGrassAmountInput;
     public int startingEnergy;//
+    private NumberTextField startingEnergyInput;
     public int energyNeededToCopulation;//
+    private NumberTextField energyNeededToCopulationInput;
     public int minMutation;//
+    private NumberTextField minMutationInput;
     public int maxMutation;//
-    public boolean mutationVariant;
+    private NumberTextField maxMutationInput;
     public int genomeSize;//
+    private NumberTextField genomeSizeInput;
+    public boolean mutationVariant;
     public boolean behaviorVariant;
-
+    public boolean mapVariant;
     public boolean showMapVariant = false;
     public boolean showMutationVariant = false;
     public boolean showBehaviorVariant = false;
@@ -37,53 +46,53 @@ public class Settings extends VBox {
         this.setAlignment(Pos.CENTER);
 
         Label widthLabel = new Label("width");
-        NumberTextField widthInput = new NumberTextField();
+        widthInput = new NumberTextField();
         VBox width = new VBox(widthLabel,widthInput);
         getChildren().add(width);
 
         Label heightLabel = new Label("height");
-        NumberTextField heightInput = new NumberTextField();
+        heightInput = new NumberTextField();
         VBox height = new VBox(heightLabel,heightInput);
         getChildren().add(height);
 
         Label dailyGrassAmountLabel = new Label("dailyGrassAmount");
-        NumberTextField dailyGrassAmountInput = new NumberTextField();
+        dailyGrassAmountInput = new NumberTextField();
         VBox dailyGrassAmount = new VBox(dailyGrassAmountLabel,dailyGrassAmountInput);
         getChildren().add(dailyGrassAmount);
 
         Label startingGrassAmountLabel = new Label("startingGrassAmount");
-        NumberTextField startingGrassAmountInput = new NumberTextField();
+        startingGrassAmountInput = new NumberTextField();
         VBox startingGrassAmount = new VBox(startingGrassAmountLabel,startingGrassAmountInput);
         getChildren().add(startingGrassAmount);
 
         Label startingEnergyLabel = new Label("startingEnergy");
-        NumberTextField startingEnergyInput = new NumberTextField();
+        startingEnergyInput = new NumberTextField();
         VBox startingEnergy = new VBox(startingEnergyLabel,startingEnergyInput);
         getChildren().add(startingEnergy);
 
         Label energyFromGrassLabel = new Label("energyFromGrass");
-        NumberTextField energyFromGrassInput = new NumberTextField();
+        energyFromGrassInput = new NumberTextField();
         VBox energyFromGrass = new VBox(energyFromGrassLabel,energyFromGrassInput);
         getChildren().add(energyFromGrass);
 
         Label genomeSizeLabel = new Label("genomeSize");
-        NumberTextField genomeSizeInput = new NumberTextField();
+        genomeSizeInput = new NumberTextField();
         VBox genomeSize = new VBox(genomeSizeLabel,genomeSizeInput);
         getChildren().add(genomeSize);
 
         Label energyNeededToCopulationLabel = new Label("energyNeededToCopulation");
-        NumberTextField energyNeededToCopulationInput = new NumberTextField();
+        energyNeededToCopulationInput = new NumberTextField();
         VBox energyNeededToCopulation = new VBox(energyNeededToCopulationLabel,energyNeededToCopulationInput);
         getChildren().add(energyNeededToCopulation);
 
         Label minMutationLabel = new Label("minMutation");
-        NumberTextField minMutationInput = new NumberTextField();
+        minMutationInput = new NumberTextField();
         VBox minMutation = new VBox(minMutationLabel,minMutationInput);
         getChildren().add(minMutation);
 
 
         Label maxMutationLabel = new Label("maxMutation");
-        NumberTextField maxMutationInput = new NumberTextField();
+        maxMutationInput = new NumberTextField();
         VBox maxMutation = new VBox(maxMutationLabel,maxMutationInput);
         getChildren().add(maxMutation);
 
@@ -113,5 +122,17 @@ public class Settings extends VBox {
 
     }
 
+    public void getSettings(){
+        mapHeight = heightInput.getNumber().intValue();
+        mapWidth = widthInput.getNumber().intValue();
 
+        startingGrassAmount = startingGrassAmountInput.getNumber().intValue();//
+        energyFromGrass = energyFromGrassInput.getNumber().intValue();//
+        dailyGrassAmount = dailyGrassAmountInput.getNumber().intValue();//
+        startingEnergy = startingEnergyInput.getNumber().intValue();//
+        energyNeededToCopulation = energyNeededToCopulationInput.getNumber().intValue();//
+        minMutation = minMutationInput.getNumber().intValue();//
+        maxMutation = maxMutationInput.getNumber().intValue();//
+        genomeSize = genomeSizeInput.getNumber().intValue();//
+    }
 }

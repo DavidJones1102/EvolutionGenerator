@@ -46,9 +46,10 @@ public class App extends Application implements IPositionChangeObserver {
         Settings settings = new Settings(800, 100 );
 
         button.setOnAction( actionEvent->{
-            map = new Jungle(10,10,30,10);
+            settings.getSettings();
+            map = new Jungle(settings);
             Vector2d[] positions = { new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2),    new Vector2d(3,4) };
-            engine = new SimulationEngine(map, positions);
+            engine = new SimulationEngine(map, positions,settings);
             engine.subscribeAll(this);
             simulationThread = new Thread(engine);
             this.simulationThread.start();

@@ -4,6 +4,7 @@ import agh.ics.oop.Interfaces.IPositionChangeObserver;
 import agh.ics.oop.MapElementsValues.Vector2d;
 import agh.ics.oop.MapElements.Animal;
 import agh.ics.oop.Maps.AbstractWorldMap;
+import agh.ics.oop.gui.Settings;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -14,11 +15,17 @@ public class SimulationEngine implements IEngine, Runnable{
     private ArrayList<Animal> animals = new ArrayList<>();
     private int nOfAnimals=0;
     LinkedList<IPositionChangeObserver> observers = new LinkedList<>();
-    private int initialEnergy=10;
+    private int initialEnergy;
+    private int genomeSize;
+    private int energyNeddedToCopulation;
 
-    public SimulationEngine(AbstractWorldMap mapGiven, Vector2d[] positionesGiven) {
+    public SimulationEngine(AbstractWorldMap mapGiven, Vector2d[] positionesGiven, Settings settings) {
         map = mapGiven;
         positiones = positionesGiven;
+        genomeSize = settings.genomeSize;
+        initialEnergy = settings.startingEnergy;
+        energyNeddedToCopulation = settings.energyNeededToCopulation;
+
         placeAnimals();
     }
 
@@ -26,7 +33,7 @@ public class SimulationEngine implements IEngine, Runnable{
         boolean flag;
         Animal animalToAdd;
         for (Vector2d animalPosition: positiones){
-            animalToAdd = new Animal(map,animalPosition, initialEnergy);
+            animalToAdd = new Animal(map,animalPosition, initialEnergy, genomeSize);
             flag = map.place(animalToAdd);
             if(flag){
                 animals.add(animalToAdd);
