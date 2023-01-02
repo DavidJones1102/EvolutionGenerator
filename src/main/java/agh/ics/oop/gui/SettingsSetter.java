@@ -1,45 +1,33 @@
 package agh.ics.oop.gui;
 
+import agh.ics.oop.MapElementsValues.Settings;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.math.BigDecimal;
 
-public class Settings extends VBox {
 
+public class SettingsSetter extends VBox {
 
-    public int mapHeight;//
+    public Settings settings = new Settings();
     private NumberTextField heightInput;
-    public int mapWidth;//
     private NumberTextField widthInput;
-    public int startingGrassAmount;//
     private NumberTextField startingGrassAmountInput;
-    public int energyFromGrass;//
     private NumberTextField energyFromGrassInput;
-    public int dailyGrassAmount;//
     private NumberTextField dailyGrassAmountInput;
-    public int startingEnergy;//
     private NumberTextField startingEnergyInput;
-    public int energyNeededToCopulation;//
     private NumberTextField energyNeededToCopulationInput;
-    public int minMutation;//
     private NumberTextField minMutationInput;
-    public int maxMutation;//
     private NumberTextField maxMutationInput;
-    public int genomeSize;//
     private NumberTextField genomeSizeInput;
-    public boolean mutationVariant;
-    public boolean behaviorVariant;
-    public boolean mapVariant;
+    private NumberTextField startingAnimalsNumberInput;
     public boolean showMapVariant = false;
     public boolean showMutationVariant = false;
     public boolean showBehaviorVariant = false;
 
-    public Settings( double prefWidth, double prefHeight) {
+    public SettingsSetter(double prefWidth, double prefHeight) {
         setPrefWidth(prefWidth);
         setPrefHeight(prefHeight);
 
@@ -96,6 +84,11 @@ public class Settings extends VBox {
         VBox maxMutation = new VBox(maxMutationLabel,maxMutationInput);
         getChildren().add(maxMutation);
 
+        Label startingAnimalsNumberLabel = new Label("startingAnimalsNumber");
+        startingAnimalsNumberInput = new NumberTextField();
+        VBox startingAnimalsNumber = new VBox(startingAnimalsNumberLabel,startingAnimalsNumberInput);
+        getChildren().add(startingAnimalsNumber);
+
         Button mapVariantButton = new Button();
         mapVariantButton.setText(!showMapVariant ? "Jungle" : "--");
         mapVariantButton.setOnAction(event -> {
@@ -120,19 +113,42 @@ public class Settings extends VBox {
         });
         getChildren().add(behaviorVariantButton);
 
+        Button recommendedSettingsButton = new Button();
+        recommendedSettingsButton.setText("Recommended settings");
+        recommendedSettingsButton.setOnAction(event -> {
+            recommendedSettings();
+        });
+        getChildren().add(recommendedSettingsButton);
+
     }
 
+    private void recommendedSettings(){
+        heightInput.setNumber(new BigDecimal(10));
+        widthInput.setNumber(new BigDecimal(10));
+        startingGrassAmountInput.setNumber(new BigDecimal(10));
+        energyFromGrassInput.setNumber(new BigDecimal(10));
+        dailyGrassAmountInput.setNumber(new BigDecimal(10));
+        startingEnergyInput.setNumber(new BigDecimal(10));
+        minMutationInput.setNumber(new BigDecimal(1));
+        genomeSizeInput.setNumber(new BigDecimal(10));
+        startingAnimalsNumberInput.setNumber(new BigDecimal(10));
+        energyNeededToCopulationInput.setNumber(new BigDecimal(10));
+        maxMutationInput.setNumber(new BigDecimal(2));
+    }
     public void getSettings(){
-        mapHeight = heightInput.getNumber().intValue();
-        mapWidth = widthInput.getNumber().intValue();
-
-        startingGrassAmount = startingGrassAmountInput.getNumber().intValue();//
-        energyFromGrass = energyFromGrassInput.getNumber().intValue();//
-        dailyGrassAmount = dailyGrassAmountInput.getNumber().intValue();//
-        startingEnergy = startingEnergyInput.getNumber().intValue();//
-        energyNeededToCopulation = energyNeededToCopulationInput.getNumber().intValue();//
-        minMutation = minMutationInput.getNumber().intValue();//
-        maxMutation = maxMutationInput.getNumber().intValue();//
-        genomeSize = genomeSizeInput.getNumber().intValue();//
+        settings.mapHeight = heightInput.getNumber().intValue();
+        settings.mapWidth = widthInput.getNumber().intValue();
+        settings.startingGrassAmount = startingGrassAmountInput.getNumber().intValue();//
+        settings.energyFromGrass = energyFromGrassInput.getNumber().intValue();//
+        settings.dailyGrassAmount = dailyGrassAmountInput.getNumber().intValue();//
+        settings.startingEnergy = startingEnergyInput.getNumber().intValue();//
+        settings.energyNeededToCopulation = energyNeededToCopulationInput.getNumber().intValue();//
+        settings.minMutation = minMutationInput.getNumber().intValue();//
+        settings.maxMutation = maxMutationInput.getNumber().intValue();//
+        settings.genomeSize = genomeSizeInput.getNumber().intValue();//
+        settings.startingAnimalsNumber = startingAnimalsNumberInput.getNumber().intValue();
+        settings.behaviorVariant = showBehaviorVariant;
+        settings.mutationVariant = showMutationVariant;
+        settings.mapVariant = showMapVariant;
     }
 }

@@ -43,13 +43,13 @@ public class App extends Application implements IPositionChangeObserver {
         button.setAlignment(Pos.CENTER);
         stage = primaryStage;
 
-        Settings settings = new Settings(800, 100 );
+        SettingsSetter settingsSetter = new SettingsSetter(800, 100 );
 
         button.setOnAction( actionEvent->{
-            settings.getSettings();
-            map = new Jungle(settings);
+            settingsSetter.getSettings();
+            map = new Jungle(settingsSetter.settings);
             Vector2d[] positions = { new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2),new Vector2d(2,2),    new Vector2d(3,4) };
-            engine = new SimulationEngine(map, positions,settings);
+            engine = new SimulationEngine(map, positions, settingsSetter.settings);
             engine.subscribeAll(this);
             simulationThread = new Thread(engine);
             this.simulationThread.start();
@@ -61,7 +61,7 @@ public class App extends Application implements IPositionChangeObserver {
         VBox buttonVBox = new VBox(button);
         buttonVBox.setAlignment(Pos.CENTER);
         buttonVBox.setPadding(new Insets(16));
-        gridPane.add(settings,1,1);
+        gridPane.add(settingsSetter,1,1);
         gridPane.add(buttonVBox,1,2);
         Scene scene = new Scene(gridPane, 800, 800);
         stage.setScene(scene);

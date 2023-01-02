@@ -1,10 +1,11 @@
 package agh.ics.oop.Simulation;
 
 import agh.ics.oop.Interfaces.IPositionChangeObserver;
+import agh.ics.oop.MapElementsValues.Settings;
 import agh.ics.oop.MapElementsValues.Vector2d;
 import agh.ics.oop.MapElements.Animal;
 import agh.ics.oop.Maps.AbstractWorldMap;
-import agh.ics.oop.gui.Settings;
+import agh.ics.oop.gui.SettingsSetter;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -18,28 +19,43 @@ public class SimulationEngine implements IEngine, Runnable{
     private int initialEnergy;
     private int genomeSize;
     private int energyNeddedToCopulation;
+    private Settings settings;
 
-    public SimulationEngine(AbstractWorldMap mapGiven, Vector2d[] positionesGiven, Settings settings) {
+    public SimulationEngine(AbstractWorldMap mapGiven, Vector2d[] positionesGiven, Settings settingsGiven) {
         map = mapGiven;
         positiones = positionesGiven;
-        genomeSize = settings.genomeSize;
-        initialEnergy = settings.startingEnergy;
-        energyNeddedToCopulation = settings.energyNeededToCopulation;
+        genomeSize = settingsGiven.genomeSize;
+        initialEnergy = settingsGiven.startingEnergy;
+        energyNeddedToCopulation = settingsGiven.energyNeededToCopulation;
 
+        settings = settingsGiven;
         placeAnimals();
     }
 
     private void placeAnimals( ){
         boolean flag;
-        Animal animalToAdd;
-        for (Vector2d animalPosition: positiones){
-            animalToAdd = new Animal(map,animalPosition, initialEnergy, genomeSize);
+        for(int i=0; i<settings.startingAnimalsNumber;i++){
+            int randomX = (int) (Math.random()*settings.mapWidth);
+            int randomY = (int) (Math.random()*settings.mapHeight);
+            Vector2d animalPosition = new Vector2d(randomX,randomY);
+            Animal animalToAdd = new Animal(map,animalPosition, settings);
             flag = map.place(animalToAdd);
             if(flag){
                 animals.add(animalToAdd);
                 nOfAnimals++;
             }
+
         }
+        //boolean flag;
+        //Animal animalToAdd;
+        //for (Vector2d animalPosition: positiones){
+        //    animalToAdd = new Animal(map,animalPosition, initialEnergy, genomeSize);
+        //    flag = map.place(animalToAdd);
+        //    if(flag){
+        //        animals.add(animalToAdd);
+        //        nOfAnimals++;
+        //    }
+        //}
     }
     public void addAnimal(Animal animal){
         animals.add(animal);

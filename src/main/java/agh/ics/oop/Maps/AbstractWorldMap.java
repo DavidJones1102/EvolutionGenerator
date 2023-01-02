@@ -13,7 +13,7 @@ import java.util.Map;
 
 public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     protected Map<Vector2d, LinkedList<Animal>> animals = new HashMap<>();
-    protected int energyNeddedToCopulation =10;
+    protected int energyNeddedToCopulation;
     protected Map<Vector2d, Grass> grass = new HashMap<>();
     protected LinkedList<Animal> deadAnimals = new LinkedList<>();
     protected int grassProfit;

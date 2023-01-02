@@ -2,8 +2,8 @@ package agh.ics.oop.Maps;
 
 import agh.ics.oop.MapElements.Animal;
 import agh.ics.oop.MapElements.Grass;
+import agh.ics.oop.MapElementsValues.Settings;
 import agh.ics.oop.MapElementsValues.Vector2d;
-import agh.ics.oop.gui.Settings;
 
 import java.util.ArrayList;
 import java.util.Collections;

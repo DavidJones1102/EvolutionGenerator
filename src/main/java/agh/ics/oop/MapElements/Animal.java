@@ -1,6 +1,7 @@
 package agh.ics.oop.MapElements;
 
 import agh.ics.oop.MapElementsValues.Genotype;
+import agh.ics.oop.MapElementsValues.Settings;
 import agh.ics.oop.Maps.AbstractWorldMap;
 import agh.ics.oop.MapElementsValues.MapDirection;
 import agh.ics.oop.Interfaces.IPositionChangeObserver;
@@ -17,17 +18,20 @@ public class Animal extends AbstractMapElement {
     private int childrenCount=0;
     private int age=0;
     private Genotype genotype;
-    public Animal(AbstractWorldMap mapGiven, Vector2d initialPosition, int initialEnergy, int genomeSize){
+    private Settings settings;
+    public Animal(AbstractWorldMap mapGiven, Vector2d initialPosition, Settings settingsGiven){
         orientation = MapDirection.values()[(int) (Math.random()*7+0.1)];
         position = initialPosition;
         map=mapGiven;
-        energy=initialEnergy;
-        genotype = new Genotype(genomeSize);
+        energy=settingsGiven.startingEnergy;
+        genotype = new Genotype(settingsGiven.genomeSize);
+        settings = settingsGiven;
     }
-    public Animal( AbstractWorldMap mapGiven){
-        this(mapGiven, new Vector2d(2,2),10,10);
-    }
+    //public Animal( AbstractWorldMap mapGiven){
+        //this(mapGiven, new Vector2d(2,2),10,10);
+    //}
     public Animal(Animal animal1, Animal animal2){
+        settings = animal1.getSettings();
         orientation = MapDirection.values()[(int) (Math.random()*7+0.1)];
         position = animal1.getPosition();
         map = animal1.getMap();
@@ -87,6 +91,9 @@ public class Animal extends AbstractMapElement {
     public int getEnergy() {
         return energy;
     }
+    public Settings getSettings() {
+        return settings;
+    }
     public AbstractWorldMap getMap(){
         return map;
     }
@@ -101,12 +108,21 @@ public class Animal extends AbstractMapElement {
     }
     @Override
     public String getLabel() {
-        return "Animal";
+        if(energy < settings.startingEnergy/2){
+            return "Low";
+        }
+        else if(energy > settings.startingEnergy*(3/2)){
+            return "High";
+        }
+        else {
+            return "Neutral";
+        }
+
     }
 
     @Override
     public String getImage() {
-        return "src/main/resources/up.png";
+        return "src/main/resources/animal.png";
     }
 }
 
