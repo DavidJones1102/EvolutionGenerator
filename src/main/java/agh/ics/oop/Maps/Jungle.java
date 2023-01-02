@@ -4,6 +4,8 @@ import agh.ics.oop.MapElements.Animal;
 import agh.ics.oop.MapElements.Grass;
 import agh.ics.oop.MapElementsValues.Settings;
 import agh.ics.oop.MapElementsValues.Vector2d;
+import agh.ics.oop.Simulation.IEngine;
+import agh.ics.oop.Simulation.SimulationEngine;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,15 +24,17 @@ public class Jungle extends AbstractWorldMap {
     private ArrayList<Vector2d> nonEquator = new ArrayList<Vector2d>();
     private int width;
     private int height;
-    public Jungle(Settings settings){
+    public Jungle(Settings settings, SimulationEngine engineGiven){
        grassProfit = settings.energyFromGrass;
        grassDaily = settings.dailyGrassAmount;
        width = settings.mapWidth;
        height = settings.mapHeight;
+       energyNeddedToCopulation = settings.energyNeededToCopulation;
        upperRight = new Vector2d(width-1,height-1);
        upperLeft = new Vector2d(0,height-1);
        lowerRight = new Vector2d(width-1,0);
 
+       engine = engineGiven;
        int equatorHeight = (int) (height*0.2);
        equatorStart =  (int) (height/2-equatorHeight/2);
        equatorEnd = (int) (height/2 +equatorHeight/2);
@@ -52,7 +56,7 @@ public class Jungle extends AbstractWorldMap {
             }
         }
         spawnGrass(settings.startingGrassAmount);
-
+        engine = engineGiven;
     }
     public void spawnGrass(int grassAmount){
         Collections.shuffle(equator,new Random());

@@ -12,7 +12,6 @@ import java.util.LinkedList;
 
 public class SimulationEngine implements IEngine, Runnable{
     private AbstractWorldMap map;
-    private Vector2d[] positiones;
     private ArrayList<Animal> animals = new ArrayList<>();
     private int nOfAnimals=0;
     LinkedList<IPositionChangeObserver> observers = new LinkedList<>();
@@ -21,15 +20,15 @@ public class SimulationEngine implements IEngine, Runnable{
     private int energyNeddedToCopulation;
     private Settings settings;
 
-    public SimulationEngine(AbstractWorldMap mapGiven, Vector2d[] positionesGiven, Settings settingsGiven) {
+    public SimulationEngine(AbstractWorldMap mapGiven,  Settings settingsGiven) {
         map = mapGiven;
-        positiones = positionesGiven;
         genomeSize = settingsGiven.genomeSize;
         initialEnergy = settingsGiven.startingEnergy;
         energyNeddedToCopulation = settingsGiven.energyNeededToCopulation;
 
         settings = settingsGiven;
         placeAnimals();
+        map.setEngine(this);
     }
 
     private void placeAnimals( ){
@@ -86,7 +85,7 @@ public class SimulationEngine implements IEngine, Runnable{
                 currentAnimal.move();
                 if(currentAnimalNumber==nOfAnimals-1){ //koniec dnia
                     map.endOfADay();
-                    Thread.sleep(2000);
+                    Thread.sleep(1000);
                 }
                 if(currentAnimal.getEnergy()<=0){
                     animals.remove(currentAnimal);

@@ -26,7 +26,7 @@ public class Genotype {
         size = Array.getLength(genotype1.getGenes());
         genes = new int[size];
 
-        int genesFrom1 = (int) (energy1/sumEnergy)*size;
+        int genesFrom1 = (int) ((((float)energy1/(float)sumEnergy))*((float)size));
         int[] genesFromAnimal = {genesFrom1,size-genesFrom1}; //Tablica zawiera liczbę genów jaką zwierzę odziedziczy od kojelno pierwszego i drugiego rodzica
 
         for (int i = 0; i < genesFrom1; i++) {

@@ -120,14 +120,16 @@ public class SettingsSetter extends VBox {
         });
         getChildren().add(recommendedSettingsButton);
 
+        recommendedSettings();
+
     }
 
     private void recommendedSettings(){
         heightInput.setNumber(new BigDecimal(10));
         widthInput.setNumber(new BigDecimal(10));
         startingGrassAmountInput.setNumber(new BigDecimal(10));
-        energyFromGrassInput.setNumber(new BigDecimal(10));
-        dailyGrassAmountInput.setNumber(new BigDecimal(10));
+        energyFromGrassInput.setNumber(new BigDecimal(7));
+        dailyGrassAmountInput.setNumber(new BigDecimal(8));
         startingEnergyInput.setNumber(new BigDecimal(10));
         minMutationInput.setNumber(new BigDecimal(1));
         genomeSizeInput.setNumber(new BigDecimal(10));

@@ -6,6 +6,8 @@ import agh.ics.oop.Interfaces.IWorldMap;
 import agh.ics.oop.MapElements.Animal;
 import agh.ics.oop.MapElements.Grass;
 import agh.ics.oop.MapElementsValues.Vector2d;
+import agh.ics.oop.Simulation.IEngine;
+import agh.ics.oop.Simulation.SimulationEngine;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -18,6 +20,9 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     protected LinkedList<Animal> deadAnimals = new LinkedList<>();
     protected int grassProfit;
     protected int grassDaily;
+    protected int deadAnimalsCount=0;
+    protected float deadAnimalsAvgAge=0;
+    protected SimulationEngine engine;
     abstract public Vector2d calcUpRight();
     abstract public Vector2d calcLowerLeft();
     abstract public boolean canMoveTo(Vector2d position);
@@ -111,6 +116,9 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
             grass.remove(food.getPosition());
         }
     }
+    public void setEngine(SimulationEngine engineGiven){
+        engine=engineGiven;
+    }
     public void addDeadAnimal(Animal deadAnimal){
         deadAnimals.add(deadAnimal);
     }
@@ -118,6 +126,8 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
        for( Animal animal: deadAnimals){
            animal.removeAllObservers();
            removeAnimal(animal.getPosition(), animal);
+           deadAnimalsAvgAge = ((deadAnimalsCount*deadAnimalsAvgAge)+animal.getAge())/(deadAnimalsCount+1);
+           deadAnimalsCount++;
        }
        deadAnimals.clear();
    }
@@ -131,8 +141,8 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
                 Animal animal1 = strongestAnimalInList(cloneAnimalList);
                 cloneAnimalList.remove(animal1);
                 Animal animal2 = strongestAnimalInList(cloneAnimalList);
-                if(animal2.getEnergy()>energyNeddedToCopulation){
-                    animalsToAdd.add( new Animal(animal1,animal2) );
+                if(animal2.getEnergy()>energyNeddedToCopulation && animal1.getEnergy()>energyNeddedToCopulation){
+                    animalsToAdd.add( new Animal(animal1,animal2));
                     animal1.addChild();
                     animal2.addChild();
                 }
@@ -140,6 +150,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
         }
         for (Animal animal: animalsToAdd){
             place(animal);
+            engine.addAnimal(animal);
         }
     }
     public void endOfADay(){
@@ -148,4 +159,26 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
         copulationPhase();
         this.spawnGrass(grassDaily);
     }
+    public float[] getAnimalsStats(){
+        float[] stats = new float[2];
+        int size = 0;
+        int avgEnergy = 0;
+        for(LinkedList<Animal> animals1: animals.values()){
+            for(Animal animal: animals1){
+                size++;
+                avgEnergy+=animal.getEnergy();
+            }
+
+        }
+        stats[0]=size;
+        stats[1]=(float)avgEnergy/size;
+        return stats;
+    }
+    public float getDeadAnimalsAvgAge(){
+        return deadAnimalsAvgAge;
+    }
+    public int getGrassCount(){
+        return grass.size();
+    }
+
 }

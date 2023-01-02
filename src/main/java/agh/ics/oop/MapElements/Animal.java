@@ -6,6 +6,7 @@ import agh.ics.oop.Maps.AbstractWorldMap;
 import agh.ics.oop.MapElementsValues.MapDirection;
 import agh.ics.oop.Interfaces.IPositionChangeObserver;
 import agh.ics.oop.MapElementsValues.Vector2d;
+import agh.ics.oop.Simulation.SimulationEngine;
 
 import java.util.ArrayList;
 
@@ -38,9 +39,10 @@ public class Animal extends AbstractMapElement {
         int energy1 =  animal1.getEnergy();
         int energy2 =  animal2.getEnergy();
         int sumEnergy = energy1+energy2;
-        energy = (int) (energy1+energy2)/2;
-        animal1.addEnergy( (int) -(energy1/sumEnergy)*energy );
-        animal1.addEnergy( (int) -( energy1-(energy1/sumEnergy)*energy ) );
+        energy = (int) ((float)(energy1+energy2)/2);
+        int energyFrom1 = (int) (((float)energy1/(float) sumEnergy)*(float)energy);
+        animal1.addEnergy( -energyFrom1);
+        animal2.addEnergy( -energy+energyFrom1 );
         genotype = new Genotype(animal1, animal2);
     }
     public String toString(){
@@ -60,7 +62,7 @@ public class Animal extends AbstractMapElement {
         Vector2d oldPosition = position;
         position = map.positionInBounds(this, newPosition);
         if(!oldPosition.equals(position)){
-            this.positionChanged(oldPosition,position, this);
+            this.positionChanged(oldPosition,position);
         }
 
         age++;
@@ -78,7 +80,7 @@ public class Animal extends AbstractMapElement {
     public void removeAllObservers(){
         observers.clear();
     }
-    private void positionChanged(Vector2d oldPosition, Vector2d newPosition, Animal animal){
+    private void positionChanged(Vector2d oldPosition, Vector2d newPosition){
         for(IPositionChangeObserver observer: observers){
             observer.positionChanged(oldPosition, newPosition, this);
         }
