@@ -127,7 +127,7 @@ public class App extends Application implements IPositionChangeObserver {
         }
         gridPane.getColumnConstraints().add(new ColumnConstraints(50));
         gridPane.getRowConstraints().add(new RowConstraints(50));
-        Text xy = new Text("x\\y");
+        Text xy = new Text("y\\x");
         gridPane.add(xy,0,0);
         GridPane.setHalignment(xy, HPos.CENTER);
 

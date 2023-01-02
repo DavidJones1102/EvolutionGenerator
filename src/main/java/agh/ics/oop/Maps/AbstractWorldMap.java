@@ -5,22 +5,26 @@ import agh.ics.oop.Interfaces.IPositionChangeObserver;
 import agh.ics.oop.Interfaces.IWorldMap;
 import agh.ics.oop.MapElements.Animal;
 import agh.ics.oop.MapElements.Grass;
+import agh.ics.oop.MapElementsValues.Settings;
 import agh.ics.oop.MapElementsValues.Vector2d;
 import agh.ics.oop.Simulation.SimulationEngine;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
 public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     protected Map<Vector2d, LinkedList<Animal>> animals = new HashMap<>();
-    protected int energyNeddedToCopulation;
     protected Map<Vector2d, Grass> grass = new HashMap<>();
     protected LinkedList<Animal> deadAnimals = new LinkedList<>();
-    protected int grassProfit;
-    protected int grassDaily;
+    protected Settings settings;
     protected int deadAnimalsCount=0;
     protected float deadAnimalsAvgAge=0;
+    protected ArrayList<Vector2d> equator = new ArrayList<Vector2d>();
+    protected ArrayList<Vector2d> nonEquator = new ArrayList<Vector2d>();
+    protected Vector2d lowerLeft = new Vector2d(0,0);
+    protected Vector2d upperRight;
     protected SimulationEngine engine;
     abstract public Vector2d calcUpRight();
     abstract public Vector2d calcLowerLeft();
@@ -106,7 +110,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
             if(animalsOnPosition != null){
                 toRemoveAfterEating.add(food);
                 Animal strongestAnimal = strongestAnimalInList(animalsOnPosition);
-                strongestAnimal.addEnergy(grassProfit);
+                strongestAnimal.addEnergy(settings.energyFromGrass);
                 strongestAnimal.addGrassEaten();
             }
         }
@@ -140,7 +144,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
                 Animal animal1 = strongestAnimalInList(cloneAnimalList);
                 cloneAnimalList.remove(animal1);
                 Animal animal2 = strongestAnimalInList(cloneAnimalList);
-                if(animal2.getEnergy()>energyNeddedToCopulation && animal1.getEnergy()>energyNeddedToCopulation){
+                if(animal2.getEnergy()>settings.energyNeededToCopulation && animal1.getEnergy()>settings.energyNeededToCopulation){
                     animalsToAdd.add( new Animal(animal1,animal2));
                     animal1.addChild();
                     animal2.addChild();
@@ -156,7 +160,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
         removeDeadAnimals();
         eating();
         copulationPhase();
-        this.spawnGrass(grassDaily);
+        this.spawnGrass(settings.dailyGrassAmount);
     }
     public float[] getAnimalsStats(){
         float[] stats = new float[2];
@@ -167,7 +171,6 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
                 size++;
                 avgEnergy+=animal.getEnergy();
             }
-
         }
         stats[0]=size;
         stats[1]=(float)avgEnergy/size;

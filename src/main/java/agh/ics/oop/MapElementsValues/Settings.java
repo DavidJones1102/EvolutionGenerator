@@ -1,5 +1,7 @@
 package agh.ics.oop.MapElementsValues;
 
+import agh.ics.oop.gui.NumberTextField;
+
 public class Settings {
     public int mapHeight;
     public int mapWidth;
@@ -12,6 +14,7 @@ public class Settings {
     public int maxMutation;
     public int genomeSize;
     public int startingAnimalsNumber;
+    public int energyTakenDuringCopulation;
     public boolean mutationVariant;
     public boolean behaviorVariant;
     public boolean mapVariant;

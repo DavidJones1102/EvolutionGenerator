@@ -12,83 +12,72 @@ import java.util.Random;
 
 
 public class Jungle extends AbstractWorldMap {
-    private Vector2d lowerLeft = new Vector2d(0,0);
-    private Vector2d upperLeft;
-    private Vector2d upperRight;
-    private Vector2d lowerRight;
-    private int equatorStart;
-    private int equatorEnd;
 
-    private ArrayList<Vector2d> equator = new ArrayList<Vector2d>();
-    private ArrayList<Vector2d> nonEquator = new ArrayList<Vector2d>();
+
+
     private int width;
     private int height;
-    public Jungle(Settings settings, SimulationEngine engineGiven){
-       grassProfit = settings.energyFromGrass;
-       grassDaily = settings.dailyGrassAmount;
+    public Jungle(Settings settingsGiven, SimulationEngine engineGiven){
+       settings = settingsGiven;
        width = settings.mapWidth;
        height = settings.mapHeight;
-       energyNeddedToCopulation = settings.energyNeededToCopulation;
        upperRight = new Vector2d(width-1,height-1);
-       upperLeft = new Vector2d(0,height-1);
-       lowerRight = new Vector2d(width-1,0);
-
        engine = engineGiven;
+
+
        int equatorHeight = (int) (height*0.2);
-       equatorStart =  (int) (height/2-equatorHeight/2);
-       equatorEnd = (int) (height/2 +equatorHeight/2);
+       int equatorStartHeight =  (int) ((float) height/2-equatorHeight);
+       int equatorEndHeight = (int) ((float) height/2 +equatorHeight);
 
+       int equatorWidth = (int) (width*0.2);
+       int equatorStartWidth =  (int) (( (float)width/(float)2 )-equatorWidth);
+       int equatorEndWidth = (int) (( (float)width/(float)2 )+equatorWidth);
 
-        for(int i=0; i<equatorStart;i++){
-            for(int j=0; j < width; j++){
-                nonEquator.add(new Vector2d(i,j));
-            }
-        }
-        for(int i=equatorEnd+1; i<height;i++){
-            for(int j=0; j < width; j++){
-                nonEquator.add(new Vector2d(i,j));
-            }
-        }
-        for(int i=equatorStart; i<=equatorEnd;i++){
-            for(int j=0; j < width; j++){
-                equator.add(new Vector2d(i,j));
-            }
-        }
-        spawnGrass(settings.startingGrassAmount);
-        engine = engineGiven;
+       //Przyporządkowuje każde pole do równika lub do nie równika
+       Vector2d lowerLeftEquator = new Vector2d(equatorStartWidth,equatorStartHeight);
+       Vector2d upperRightEquator = new Vector2d(equatorEndWidth, equatorEndHeight);
+       for(int i = 0; i<height;i++){
+           for(int j=0; j<width;j++){
+               Vector2d toAdd = new Vector2d(j,i);
+               if(toAdd.follows(lowerLeftEquator)&&toAdd.precedes(upperRightEquator)){
+                   equator.add(toAdd);
+               }
+               else{
+                   nonEquator.add(toAdd);
+               }
+           }
+       }
+       spawnGrass(settings.startingGrassAmount);
     }
     public void spawnGrass(int grassAmount){
         Collections.shuffle(equator,new Random());
         Collections.shuffle(nonEquator,new Random());
-        int grassInEquator = (int) (grassAmount*0.8);
-        for ( int i=0, j=0; i < grassInEquator;i++){
-            if(grass.get(equator.get(i+j))==null){
-                Grass grassToAdd = new Grass(equator.get(i));
-                this.placeGrass(grassToAdd);
+
+        int equatorCurrentIndex = 0;
+        int nonEquatorCurrentIndex = 0;
+        for ( int i=0; i < grassAmount;i++){
+            if(Math.random()<=0.2){
+                nonEquatorCurrentIndex=spawnGrassIn(nonEquatorCurrentIndex,nonEquator);
             }
-            else {
-                j++;
-                i--;
-                if(i+j<=equator.size()){
-                    break;
-                }
+            else{
+                equatorCurrentIndex=spawnGrassIn(equatorCurrentIndex,equator);
             }
 
         }
-        for ( int i=0,j=0; i < grassAmount-grassInEquator;i++){
-            if(grass.get(nonEquator.get(i+j))==null){
-                Grass grassToAdd = new Grass(nonEquator.get(i));
-                this.placeGrass(grassToAdd);
-            }
-            else {
-                j++;
-                i--;
-                if(i+j<=nonEquator.size()){
-                    break;
-                }
+    }
+    //Generuje trawe na jednym z pozycji w liscie jeżeli to możliwe
+    private int spawnGrassIn(int index, ArrayList<Vector2d> list){
+        while (index<list.size()){
+            if(grass.get(list.get(index)) == null){
+                this.placeGrass(new Grass(list.get(index)));
+                return index;
+            }else{
+                index++;
             }
         }
+        return index;
     }
+
     public boolean canMoveTo(Vector2d position){
         return  position.precedes(upperRight) && position.follows(lowerLeft) ;
     }

@@ -36,13 +36,10 @@ public class Animal extends AbstractMapElement {
         orientation = MapDirection.values()[(int) (Math.random()*7+0.1)];
         position = animal1.getPosition();
         map = animal1.getMap();
-        int energy1 =  animal1.getEnergy();
-        int energy2 =  animal2.getEnergy();
-        int sumEnergy = energy1+energy2;
-        energy = (int) ((float)(energy1+energy2)/2);
-        int energyFrom1 = (int) (((float)energy1/(float) sumEnergy)*(float)energy);
-        animal1.addEnergy( -energyFrom1);
-        animal2.addEnergy( -energy+energyFrom1 );
+        energy = 2*settings.energyTakenDuringCopulation;
+
+        animal1.addEnergy( -settings.energyTakenDuringCopulation);
+        animal2.addEnergy( -settings.energyTakenDuringCopulation );
         genotype = new Genotype(animal1, animal2);
     }
     public String toString(){

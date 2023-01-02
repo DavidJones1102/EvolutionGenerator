@@ -22,6 +22,7 @@ public class Genotype {
         int energy1 =  animal1.getEnergy();
         int energy2 =  animal2.getEnergy();
         int sumEnergy = energy1+energy2;
+        Settings settings = animal1.getSettings();
 
         size = Array.getLength(genotype1.getGenes());
         genes = new int[size];
@@ -36,7 +37,7 @@ public class Genotype {
             genes[i] = genotype2.getGenes()[i];
         }
 
-        int mutationsNumber = (int) (Math.random() * size );
+        int mutationsNumber = (int) (Math.random() * (settings.maxMutation-settings.minMutation))+settings.minMutation;
         for(int i=0; i<mutationsNumber; i++){
             genes[(int) (Math.random() * size )] = (int) (Math.random() * 7 + 0.1 );
         }

@@ -54,11 +54,7 @@ public class SimulationEngine implements Runnable{
         }
         observers.add(observer);
     }
-    public void unSubscribeAll(IPositionChangeObserver observer){
-        for(Animal animal: animals){
-            animal.removeObserver(observer);
-        }
-    }
+
     public void run() {
         try{
             int currentAnimalNumber = 0;
@@ -69,7 +65,7 @@ public class SimulationEngine implements Runnable{
                 currentAnimal.move();
                 if(currentAnimalNumber==nOfAnimals-1){ //koniec dnia
                     map.endOfADay();
-                    Thread.sleep(1500);
+                    Thread.sleep(2000);
                 }
                 if(currentAnimal.getEnergy()<=0){
                     animals.remove(currentAnimal);
@@ -79,7 +75,6 @@ public class SimulationEngine implements Runnable{
                         break;
                     }
                 }
-
                 currentAnimalNumber = (currentAnimalNumber+1) % nOfAnimals;
             }
         }

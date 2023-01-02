@@ -23,6 +23,7 @@ public class SettingsSetter extends VBox {
     private NumberTextField maxMutationInput;
     private NumberTextField genomeSizeInput;
     private NumberTextField startingAnimalsNumberInput;
+    private NumberTextField energyTakenDuringCopulationInput;
     public boolean showMapVariant = false;
     public boolean showMutationVariant = false;
     public boolean showBehaviorVariant = false;
@@ -73,6 +74,11 @@ public class SettingsSetter extends VBox {
         VBox energyNeededToCopulation = new VBox(energyNeededToCopulationLabel,energyNeededToCopulationInput);
         getChildren().add(energyNeededToCopulation);
 
+        Label energyTakenDuringCopulationLabel = new Label("energyTakenDuringCopulation");
+        energyTakenDuringCopulationInput = new NumberTextField();
+        VBox energyTakenDuringCopulation = new VBox(energyTakenDuringCopulationLabel,energyTakenDuringCopulationInput);
+        getChildren().add(energyTakenDuringCopulation);
+
         Label minMutationLabel = new Label("minMutation");
         minMutationInput = new NumberTextField();
         VBox minMutation = new VBox(minMutationLabel,minMutationInput);
@@ -90,7 +96,7 @@ public class SettingsSetter extends VBox {
         getChildren().add(startingAnimalsNumber);
 
         Button mapVariantButton = new Button();
-        mapVariantButton.setText(!showMapVariant ? "Jungle" : "--");
+        mapVariantButton.setText(!showMapVariant ? "Earth" : "--");
         mapVariantButton.setOnAction(event -> {
             showMapVariant = !showMapVariant;
             mapVariantButton.setText(!showMapVariant ? "Earth" : "Hell");
@@ -125,8 +131,8 @@ public class SettingsSetter extends VBox {
     }
 
     private void recommendedSettings(){
-        heightInput.setNumber(new BigDecimal(10));
-        widthInput.setNumber(new BigDecimal(10));
+        heightInput.setNumber(new BigDecimal(11));
+        widthInput.setNumber(new BigDecimal(11));
         startingGrassAmountInput.setNumber(new BigDecimal(10));
         energyFromGrassInput.setNumber(new BigDecimal(7));
         dailyGrassAmountInput.setNumber(new BigDecimal(8));
@@ -134,6 +140,7 @@ public class SettingsSetter extends VBox {
         minMutationInput.setNumber(new BigDecimal(1));
         genomeSizeInput.setNumber(new BigDecimal(10));
         startingAnimalsNumberInput.setNumber(new BigDecimal(10));
+        energyTakenDuringCopulationInput.setNumber(new BigDecimal(5));
         energyNeededToCopulationInput.setNumber(new BigDecimal(10));
         maxMutationInput.setNumber(new BigDecimal(2));
     }
@@ -149,6 +156,7 @@ public class SettingsSetter extends VBox {
         settings.maxMutation = maxMutationInput.getNumber().intValue();//
         settings.genomeSize = genomeSizeInput.getNumber().intValue();//
         settings.startingAnimalsNumber = startingAnimalsNumberInput.getNumber().intValue();
+        settings.energyTakenDuringCopulation = energyTakenDuringCopulationInput.getNumber().intValue();
         settings.behaviorVariant = showBehaviorVariant;
         settings.mutationVariant = showMutationVariant;
         settings.mapVariant = showMapVariant;
