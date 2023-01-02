@@ -2,10 +2,10 @@ package agh.ics.oop.MapElements;
 
 import agh.ics.oop.MapElementsValues.Genotype;
 import agh.ics.oop.MapElementsValues.Settings;
-import agh.ics.oop.Maps.AbstractWorldMap;
 import agh.ics.oop.MapElementsValues.MapDirection;
 import agh.ics.oop.Interfaces.IPositionChangeObserver;
 import agh.ics.oop.MapElementsValues.Vector2d;
+import agh.ics.oop.Maps.Jungle;
 import agh.ics.oop.Simulation.SimulationEngine;
 
 import java.util.ArrayList;
@@ -13,14 +13,14 @@ import java.util.ArrayList;
 public class Animal extends AbstractMapElement {
     private ArrayList<IPositionChangeObserver> observers = new ArrayList<>();
     private MapDirection orientation;
-    private AbstractWorldMap map;
+    private Jungle map;
     private int energy;
     private int grassEaten=0;
     private int childrenCount=0;
     private int age=0;
     private Genotype genotype;
     private Settings settings;
-    public Animal(AbstractWorldMap mapGiven, Vector2d initialPosition, Settings settingsGiven){
+    public Animal(Jungle mapGiven, Vector2d initialPosition, Settings settingsGiven){
         orientation = MapDirection.values()[(int) (Math.random()*7+0.1)];
         position = initialPosition;
         map=mapGiven;
@@ -49,7 +49,7 @@ public class Animal extends AbstractMapElement {
       orientation = orientation.reverseOrientation();
     };
     public void move (){
-        int gene = genotype.getGene();
+        int gene = genotype.getGene(settings.behaviorVariant);
 
         orientation = orientation.changeOrientation(gene);
 
@@ -57,7 +57,13 @@ public class Animal extends AbstractMapElement {
         Vector2d newPosition = position.add( v );
 
         Vector2d oldPosition = position;
-        position = map.positionInBounds(this, newPosition);
+        if(settings.mapVariant){
+            position = map.positionInBoundsHell(this, newPosition);
+        }
+        else {
+            position = map.positionInBoundsEarth(this, newPosition);
+        }
+
         if(!oldPosition.equals(position)){
             this.positionChanged(oldPosition,position);
         }
@@ -93,7 +99,7 @@ public class Animal extends AbstractMapElement {
     public Settings getSettings() {
         return settings;
     }
-    public AbstractWorldMap getMap(){
+    public Jungle getMap(){
         return map;
     }
     public int getAge(){
@@ -101,6 +107,9 @@ public class Animal extends AbstractMapElement {
     }
     public int getChildrenCount() {
         return childrenCount;
+    }
+    public int getGrassEaten() {
+        return grassEaten;
     }
     public Genotype getGenotype(){
         return genotype;

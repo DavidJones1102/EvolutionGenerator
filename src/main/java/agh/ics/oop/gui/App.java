@@ -5,7 +5,6 @@ import agh.ics.oop.MapElements.Grass;
 import agh.ics.oop.MapElementsValues.Vector2d;
 import agh.ics.oop.MapElements.Animal;
 import agh.ics.oop.Interfaces.IMapElement;
-import agh.ics.oop.Maps.AbstractWorldMap;
 import agh.ics.oop.Maps.Jungle;
 import agh.ics.oop.Simulation.SimulationEngine;
 import javafx.application.*;
@@ -29,7 +28,7 @@ import java.util.Map;
 
 
 public class App extends Application implements IPositionChangeObserver {
-    private AbstractWorldMap map;
+    private Jungle map;
     private Stage stage;
     private SimulationEngine engine;
     private Thread simulationThread;

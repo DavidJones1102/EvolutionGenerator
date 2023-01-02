@@ -12,7 +12,7 @@ public class Genotype {
         size = sizeGiven;
         genes = new int[size];
         for (int i = 0; i < size; i++) {
-            genes[i] = (int) (Math.random() * 7 + 0.1 );
+            genes[i] = randomGene();
         }
         currentGeneNr = (int) (Math.random() * size );
     }
@@ -28,7 +28,6 @@ public class Genotype {
         genes = new int[size];
 
         int genesFrom1 = (int) ((((float)energy1/(float)sumEnergy))*((float)size));
-        int[] genesFromAnimal = {genesFrom1,size-genesFrom1}; //Tablica zawiera liczbę genów jaką zwierzę odziedziczy od kojelno pierwszego i drugiego rodzica
 
         for (int i = 0; i < genesFrom1; i++) {
             genes[i] = genotype1.getGenes()[i];
@@ -39,14 +38,36 @@ public class Genotype {
 
         int mutationsNumber = (int) (Math.random() * (settings.maxMutation-settings.minMutation))+settings.minMutation;
         for(int i=0; i<mutationsNumber; i++){
-            genes[(int) (Math.random() * size )] = (int) (Math.random() * 7 + 0.1 );
+            if(settings.mutationVariant){
+                int randomPlace = (int) (Math.random() * size );
+                genes[randomPlace] = adjustGene( genes[randomPlace] );
+            }
+            else{
+                genes[(int) (Math.random() * size )] = randomGene();
+            }
         }
         currentGeneNr = (int) (Math.random() * size );
     }
+    private int randomGene(){
+        return (int) (Math.random() * 7 + 0.1 );
+    }
+    private int adjustGene(int gene){
+        if(Math.random()<=0.5){
+            return (gene+1)%8;
+        }
+        else{
+            return (gene+7)%8;
+        }
 
-    public int getGene() {
+    }
+    public int getGene(boolean variant) {
         int gene = genes[currentGeneNr];
-        currentGeneNr = (currentGeneNr+1)%size;
+        if(variant && (Math.random()<=0.2)){
+            currentGeneNr=(int) (Math.random() * size );
+        }
+        else{
+            currentGeneNr = (currentGeneNr+1)%size;
+        }
         return gene;
     }
     public int[] getGenes(){

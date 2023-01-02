@@ -104,18 +104,18 @@ public class SettingsSetter extends VBox {
         getChildren().add(mapVariantButton);
 
         Button mutationVariantButton = new Button();
-        mutationVariantButton.setText(!showMutationVariant ? "Random" : "Adjustment");
+        mutationVariantButton.setText(!showMutationVariant ? "Random" : "Adjustment mutation");
         mutationVariantButton.setOnAction(event -> {
             showMutationVariant = !showMutationVariant;
-            mutationVariantButton.setText(!showMutationVariant ? "Random" : "Adjustment");
+            mutationVariantButton.setText(!showMutationVariant ? "Random mutation" : "Adjustment mutation");
         });
         getChildren().add(mutationVariantButton);
 
         Button behaviorVariantButton = new Button();
-        behaviorVariantButton.setText(!showBehaviorVariant ? "Classic" : "Crazy");
+        behaviorVariantButton.setText(!showBehaviorVariant ? "Classic behavior" : "Crazy behavior");
         behaviorVariantButton.setOnAction(event -> {
             showBehaviorVariant = !showBehaviorVariant;
-            behaviorVariantButton.setText(!showBehaviorVariant ? "Classic" : "Crazy");
+            behaviorVariantButton.setText(!showBehaviorVariant ? "Classic behavior" : "Crazy behavior");
         });
         getChildren().add(behaviorVariantButton);
 

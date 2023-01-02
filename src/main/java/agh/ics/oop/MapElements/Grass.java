@@ -14,7 +14,7 @@ public class Grass extends AbstractMapElement {
 
     @Override
     public String getLabel() {
-        return "Grass";
+        return "";
     }
 
     @Override

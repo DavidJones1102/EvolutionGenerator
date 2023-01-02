@@ -4,20 +4,20 @@ import agh.ics.oop.Interfaces.IPositionChangeObserver;
 import agh.ics.oop.MapElementsValues.Settings;
 import agh.ics.oop.MapElementsValues.Vector2d;
 import agh.ics.oop.MapElements.Animal;
-import agh.ics.oop.Maps.AbstractWorldMap;
+import agh.ics.oop.Maps.Jungle;
 import agh.ics.oop.gui.SettingsSetter;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class SimulationEngine implements Runnable{
-    private AbstractWorldMap map;
+    private Jungle map;
     private ArrayList<Animal> animals = new ArrayList<>();
     private int nOfAnimals=0;
     LinkedList<IPositionChangeObserver> observers = new LinkedList<>();
     private Settings settings;
 
-    public SimulationEngine(AbstractWorldMap mapGiven,  Settings settingsGiven) {
+    public SimulationEngine(Jungle mapGiven,  Settings settingsGiven) {
         map = mapGiven;
 
         settings = settingsGiven;
