@@ -4,7 +4,6 @@ import agh.ics.oop.MapElements.Animal;
 import agh.ics.oop.MapElements.Grass;
 import agh.ics.oop.MapElementsValues.Settings;
 import agh.ics.oop.MapElementsValues.Vector2d;
-import agh.ics.oop.Simulation.IEngine;
 import agh.ics.oop.Simulation.SimulationEngine;
 
 import java.util.ArrayList;

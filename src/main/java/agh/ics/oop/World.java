@@ -1,4 +1,4 @@
-package agh.ics.oop.LaunchApp;
+package agh.ics.oop;
 import agh.ics.oop.gui.App;
 import javafx.application.Application;
 

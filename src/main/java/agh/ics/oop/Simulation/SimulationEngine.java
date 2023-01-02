@@ -10,21 +10,15 @@ import agh.ics.oop.gui.SettingsSetter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class SimulationEngine implements IEngine, Runnable{
+public class SimulationEngine implements Runnable{
     private AbstractWorldMap map;
     private ArrayList<Animal> animals = new ArrayList<>();
     private int nOfAnimals=0;
     LinkedList<IPositionChangeObserver> observers = new LinkedList<>();
-    private int initialEnergy;
-    private int genomeSize;
-    private int energyNeddedToCopulation;
     private Settings settings;
 
     public SimulationEngine(AbstractWorldMap mapGiven,  Settings settingsGiven) {
         map = mapGiven;
-        genomeSize = settingsGiven.genomeSize;
-        initialEnergy = settingsGiven.startingEnergy;
-        energyNeddedToCopulation = settingsGiven.energyNeededToCopulation;
 
         settings = settingsGiven;
         placeAnimals();
@@ -45,16 +39,6 @@ public class SimulationEngine implements IEngine, Runnable{
             }
 
         }
-        //boolean flag;
-        //Animal animalToAdd;
-        //for (Vector2d animalPosition: positiones){
-        //    animalToAdd = new Animal(map,animalPosition, initialEnergy, genomeSize);
-        //    flag = map.place(animalToAdd);
-        //    if(flag){
-        //        animals.add(animalToAdd);
-        //        nOfAnimals++;
-        //    }
-        //}
     }
     public void addAnimal(Animal animal){
         animals.add(animal);
@@ -85,7 +69,7 @@ public class SimulationEngine implements IEngine, Runnable{
                 currentAnimal.move();
                 if(currentAnimalNumber==nOfAnimals-1){ //koniec dnia
                     map.endOfADay();
-                    Thread.sleep(1000);
+                    Thread.sleep(1500);
                 }
                 if(currentAnimal.getEnergy()<=0){
                     animals.remove(currentAnimal);
