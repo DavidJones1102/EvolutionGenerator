@@ -20,6 +20,7 @@ public class Animal extends AbstractMapElement {
     private int age=0;
     private Genotype genotype;
     private Settings settings;
+    private boolean highlight = false;
     public Animal(Jungle mapGiven, Vector2d initialPosition, Settings settingsGiven){
         orientation = MapDirection.values()[(int) (Math.random()*7+0.1)];
         position = initialPosition;
@@ -28,9 +29,7 @@ public class Animal extends AbstractMapElement {
         genotype = new Genotype(settingsGiven.genomeSize);
         settings = settingsGiven;
     }
-    //public Animal( AbstractWorldMap mapGiven){
-        //this(mapGiven, new Vector2d(2,2),10,10);
-    //}
+
     public Animal(Animal animal1, Animal animal2){
         settings = animal1.getSettings();
         orientation = MapDirection.values()[(int) (Math.random()*7+0.1)];
@@ -116,7 +115,10 @@ public class Animal extends AbstractMapElement {
     }
     @Override
     public String getLabel() {
-        if(energy < settings.startingEnergy/2){
+        if(highlight){
+            return "!!!!!";
+        }
+        else if(energy < settings.startingEnergy/2){
             return "Low";
         }
         else if(energy > settings.startingEnergy*(3/2)){
@@ -126,6 +128,10 @@ public class Animal extends AbstractMapElement {
             return "Neutral";
         }
 
+    }
+
+    public void setHighlight(boolean highlight) {
+        this.highlight = highlight;
     }
 
     @Override

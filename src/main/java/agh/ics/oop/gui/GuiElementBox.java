@@ -1,6 +1,7 @@
 package agh.ics.oop.gui;
 
 import agh.ics.oop.Interfaces.IMapElement;
+import agh.ics.oop.MapElements.Animal;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,4 +34,5 @@ public class GuiElementBox {
     public VBox getVbox() {
         return vbox;
     }
+
 }

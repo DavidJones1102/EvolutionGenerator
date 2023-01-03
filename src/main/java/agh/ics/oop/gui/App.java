@@ -1,13 +1,14 @@
 package agh.ics.oop.gui;
 
 import agh.ics.oop.Interfaces.IPositionChangeObserver;
-import agh.ics.oop.MapElements.Grass;
 import agh.ics.oop.MapElementsValues.Vector2d;
 import agh.ics.oop.MapElements.Animal;
 import agh.ics.oop.Interfaces.IMapElement;
 import agh.ics.oop.Maps.Jungle;
 import agh.ics.oop.Simulation.SimulationEngine;
 import javafx.application.*;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,7 +23,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,11 +35,20 @@ public class App extends Application implements IPositionChangeObserver {
     private Button button = new Button("Start");
 
     private boolean buttonFlag = true;
-    private GridPane gridPane = new GridPane();
-    private TextField textField = new TextField ();
 
+    private TextField textField = new TextField ();
+    private Animal highlightedAnimal;
+
+    GridPane rootPane = new GridPane();
+
+    GridPane buttonPane;
+    GridPane statsPane;
+    GridPane animalStatsPane;
+    Scene scene = new Scene(rootPane, 800, 800);
+    GridPane mapGridPane;
     @Override
     public void init() {
+
     }
 
     @Override
@@ -59,7 +68,8 @@ public class App extends Application implements IPositionChangeObserver {
             this.simulationThread.start();
             buttonFlag = !buttonFlag;
             button.setText("Stop");
-            draw(stage);
+            drawMap(stage);
+            drawButton();
         });
 
         VBox buttonVBox = new VBox(button);
@@ -73,24 +83,17 @@ public class App extends Application implements IPositionChangeObserver {
 
         //draw(stage);
     }
-    private void draw(Stage stage){
-        GridPane rootPane = new GridPane();
-        GridPane gridPane = new GridPane();
-        GridPane buttonPane = new GridPane();
-        GridPane statsPane = new GridPane();
-        int freeSpace = 0;
 
-        Map<int[], Integer> genotypes = new HashMap<>();
-        int[] mostPopularGenotype={};
-        int mostPopularGenotypeCounter=0;
-
+    private void drawButton(){
+        rootPane.getChildren().remove(buttonPane);
+        buttonPane = new GridPane();
         if(buttonFlag){
             button.setOnAction( actionEvent->{
                 simulationThread = new Thread(engine);
                 this.simulationThread.start();
                 buttonFlag = !buttonFlag;
                 button.setText("Stop");
-                draw(stage);
+                drawButton();
             });
 
         }
@@ -99,35 +102,47 @@ public class App extends Application implements IPositionChangeObserver {
                 simulationThread.interrupt();
                 buttonFlag = !buttonFlag;
                 button.setText("Start");
-
-                draw(stage);
+                drawButton();
             });
         }
         buttonPane.add(button,0,0);
-
-        rootPane.add(gridPane,0,0);
         rootPane.add(buttonPane,0,1);
-        rootPane.add(statsPane,0,2);
+    }
+    private void drawMap(Stage stage){
+        rootPane.getChildren().remove(mapGridPane);
+        rootPane.getChildren().remove(statsPane);
+        mapGridPane = new GridPane();
+        statsPane = new GridPane();
 
-        gridPane.setGridLinesVisible(true);
+        rootPane.add(mapGridPane,0,0);
+        rootPane.add(statsPane,0,2);
+        mapGridPane.setGridLinesVisible(true);
+
+        int freeSpace = 0;
+
+        Map<int[], Integer> genotypes = new HashMap<>();
+        int[] mostPopularGenotype={};
+        int mostPopularGenotypeCounter=0;
+
+
         Vector2d lowerLeft = map.calcLowerLeft();
         Vector2d upperRight = map.calcUpRight();
         for(int i=lowerLeft.x+1 ;i<=upperRight.x+1;i++){
-            gridPane.getColumnConstraints().add(new ColumnConstraints(50));
+            mapGridPane.getColumnConstraints().add(new ColumnConstraints(50));
             Text toAdd = new Text(Integer.toString(i-1));
-            gridPane.add(toAdd,i,0);
+            mapGridPane.add(toAdd,i,0);
             GridPane.setHalignment(toAdd, HPos.CENTER);
         }
         for(int i=lowerLeft.y ;i<=upperRight.y;i++){
-            gridPane.getRowConstraints().add(new RowConstraints(50));
+            mapGridPane.getRowConstraints().add(new RowConstraints(50));
             Text toAdd = new Text(Integer.toString(i));
-            gridPane.add(toAdd,0,upperRight.y+1-i);
+            mapGridPane.add(toAdd,0,upperRight.y+1-i);
             GridPane.setHalignment(toAdd, HPos.CENTER);
         }
-        gridPane.getColumnConstraints().add(new ColumnConstraints(50));
-        gridPane.getRowConstraints().add(new RowConstraints(50));
+        mapGridPane.getColumnConstraints().add(new ColumnConstraints(50));
+        mapGridPane.getRowConstraints().add(new RowConstraints(50));
         Text xy = new Text("y\\x");
-        gridPane.add(xy,0,0);
+        mapGridPane.add(xy,0,0);
         GridPane.setHalignment(xy, HPos.CENTER);
 
         for(int i=lowerLeft.x ;i<=upperRight.x;i++){
@@ -137,7 +152,16 @@ public class App extends Application implements IPositionChangeObserver {
                 VBox vbox;
                 if(el!=null){
                     vbox = new VBox( new GuiElementBox(el).getVbox() );
-                    gridPane.add(vbox,i+1,upperRight.y+1-j);
+                    if(el instanceof Animal){
+                        vbox.setOnMouseClicked( new EventHandler<Event>() {
+                            @Override
+                            public void handle(Event event) {
+                                changeHighligtedAnima((Animal) el);
+                                displaySingleAnimalStats();
+                            }
+                        });
+                    }
+                    mapGridPane.add(vbox,i+1,upperRight.y+1-j);
                 }
                 else{
                     freeSpace++;
@@ -183,12 +207,48 @@ public class App extends Application implements IPositionChangeObserver {
         Label avgAge = new Label("Average dead animal age: "+map.getDeadAnimalsAvgAge());
         statsPane.add(avgAge,0,5);
 
+        if(highlightedAnimal != null){
+            displaySingleAnimalStats();
+        }
 
-        Scene scene = new Scene(rootPane, 800, 800);
         stage.setScene(scene);
         stage.show();
 
 
+    }
+    private void changeHighligtedAnima(Animal animal){
+        if(highlightedAnimal != null){
+            highlightedAnimal.setHighlight(false);
+        }
+        animal.setHighlight(true);
+        highlightedAnimal=animal;
+    }
+    private void displaySingleAnimalStats(){
+        rootPane.getChildren().remove(animalStatsPane);
+        animalStatsPane = new GridPane();
+
+        Label animalCount = new Label("Animal stats:");
+        animalStatsPane.add(animalCount,0,0);
+
+        Label genome = new Label("genome: " + intArrayToString(highlightedAnimal.getGenotype().getGenes()) );
+        animalStatsPane.add(genome,0,1);
+
+        Label currGeneNr = new Label("Current gene number: " + highlightedAnimal.getGenotype().getCurrentGeneNr() );
+        animalStatsPane.add(currGeneNr,0,2);
+
+        Label grassEaten = new Label("grass eaten: " + highlightedAnimal.getGrassEaten());
+        animalStatsPane.add(grassEaten,0,3);
+
+        Label energy = new Label("energy: " + highlightedAnimal.getEnergy());
+        animalStatsPane.add(energy,0,4);
+
+        Label children = new Label("children: " + highlightedAnimal.getChildrenCount());
+        animalStatsPane.add(children,0,5);
+
+        Label age = new Label("age: " + highlightedAnimal.getAge());
+        animalStatsPane.add(age,0,6);
+
+        rootPane.add(animalStatsPane,1,2);
     }
     private String intArrayToString(int[] arr){
         String arrayString = "";
@@ -199,7 +259,7 @@ public class App extends Application implements IPositionChangeObserver {
     }
     @Override
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition, Animal animal) {
-        Platform.runLater( ()->draw(stage) );
+        Platform.runLater( ()-> drawMap(stage) );
     }
 
 }

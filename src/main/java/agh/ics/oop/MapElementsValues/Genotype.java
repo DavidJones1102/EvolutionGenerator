@@ -74,4 +74,8 @@ public class Genotype {
         return genes;
     }
 
+    public int getCurrentGeneNr(){
+        return currentGeneNr;
+    }
+
 }
