@@ -104,7 +104,7 @@ public class SettingsSetter extends VBox {
         getChildren().add(mapVariantButton);
 
         Button mutationVariantButton = new Button();
-        mutationVariantButton.setText(!showMutationVariant ? "Random" : "Adjustment mutation");
+        mutationVariantButton.setText(!showMutationVariant ? "Random mutation" : "Adjustment mutation");
         mutationVariantButton.setOnAction(event -> {
             showMutationVariant = !showMutationVariant;
             mutationVariantButton.setText(!showMutationVariant ? "Random mutation" : "Adjustment mutation");
