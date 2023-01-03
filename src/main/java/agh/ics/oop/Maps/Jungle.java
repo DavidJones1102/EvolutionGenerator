@@ -24,7 +24,6 @@ public class Jungle implements IWorldMap, IPositionChangeObserver {
     protected Vector2d upperRight;
     protected SimulationEngine engine;
 
-
     private int width;
     private int height;
     public Jungle(Settings settingsGiven, SimulationEngine engineGiven){
@@ -107,26 +106,12 @@ public class Jungle implements IWorldMap, IPositionChangeObserver {
         this.removeAnimal(oldPosition,animal);
         this.addAnimal(newPosition, animal);
     }
-    private boolean compareAnimals(Animal temporaryTheStrongest,Animal animal){
-        int energyDiff = temporaryTheStrongest.getEnergy() - animal.getEnergy();
-        int ageDiff = temporaryTheStrongest.getAge() - animal.getAge();
-        int childDiff = temporaryTheStrongest.getChildrenCount() - animal.getChildrenCount();
-        if (energyDiff < 0){ return true; }
-        else if (energyDiff > 0){ return false; }
-        else if (ageDiff < 0){ return true; }
-        else if (ageDiff > 0){ return false; }
-        else if (childDiff < 0){ return true; }
-        else{ return false; }
-    }
-    private Animal strongestAnimalInList(LinkedList<Animal> animalsOnPosition){
-        Animal temporaryTheStrongest = animalsOnPosition.get(0);
-        for(Animal animal: animalsOnPosition){
-            boolean changeAnimal = compareAnimals(temporaryTheStrongest, animal);
-            if(changeAnimal){
-                temporaryTheStrongest = animal;
-            }
-        }
-        return temporaryTheStrongest;
+
+    public void endOfADay(){
+        removeDeadAnimals();
+        eating();
+        copulationPhase();
+        this.spawnGrass(settings.dailyGrassAmount);
     }
     private void eating(){
         LinkedList<Grass> toRemoveAfterEating = new LinkedList<>();
@@ -147,12 +132,6 @@ public class Jungle implements IWorldMap, IPositionChangeObserver {
             grass.remove(food.getPosition());
         }
     }
-    public void setEngine(SimulationEngine engineGiven){
-        engine=engineGiven;
-    }
-    public void addDeadAnimal(Animal deadAnimal){
-        deadAnimals.add(deadAnimal);
-    }
     private void removeDeadAnimals(){
         for( Animal animal: deadAnimals){
             animal.removeAllObservers();
@@ -162,7 +141,6 @@ public class Jungle implements IWorldMap, IPositionChangeObserver {
         }
         deadAnimals.clear();
     }
-
     private void copulationPhase(){
         LinkedList<Animal> animalsToAdd = new LinkedList<>();
 
@@ -184,12 +162,34 @@ public class Jungle implements IWorldMap, IPositionChangeObserver {
             engine.addAnimal(animal);
         }
     }
-    public void endOfADay(){
-        removeDeadAnimals();
-        eating();
-        copulationPhase();
-        this.spawnGrass(settings.dailyGrassAmount);
+    private boolean compareAnimals(Animal temporaryTheStrongest,Animal animal){
+        int energyDiff = temporaryTheStrongest.getEnergy() - animal.getEnergy();
+        int ageDiff = temporaryTheStrongest.getAge() - animal.getAge();
+        int childDiff = temporaryTheStrongest.getChildrenCount() - animal.getChildrenCount();
+        if (energyDiff < 0){ return true; }
+        else if (energyDiff > 0){ return false; }
+        else if (ageDiff < 0){ return true; }
+        else if (ageDiff > 0){ return false; }
+        else if (childDiff < 0){ return true; }
+        else{ return false; }
     }
+    private Animal strongestAnimalInList(LinkedList<Animal> animalsOnPosition){
+        Animal temporaryTheStrongest = animalsOnPosition.get(0);
+        for(Animal animal: animalsOnPosition){
+            boolean changeAnimal = compareAnimals(temporaryTheStrongest, animal);
+            if(changeAnimal){
+                temporaryTheStrongest = animal;
+            }
+        }
+        return temporaryTheStrongest;
+    }
+    public void setEngine(SimulationEngine engineGiven){
+        engine=engineGiven;
+    }
+    public void addDeadAnimal(Animal deadAnimal){
+        deadAnimals.add(deadAnimal);
+    }
+
     public float[] getAnimalsStats(){
         float[] stats = new float[2];
         int size = 0;

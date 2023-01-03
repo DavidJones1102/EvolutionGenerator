@@ -6,7 +6,6 @@ import agh.ics.oop.MapElementsValues.MapDirection;
 import agh.ics.oop.Interfaces.IPositionChangeObserver;
 import agh.ics.oop.MapElementsValues.Vector2d;
 import agh.ics.oop.Maps.Jungle;
-import agh.ics.oop.Simulation.SimulationEngine;
 
 import java.util.ArrayList;
 

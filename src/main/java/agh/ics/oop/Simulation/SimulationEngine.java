@@ -5,7 +5,7 @@ import agh.ics.oop.MapElementsValues.Settings;
 import agh.ics.oop.MapElementsValues.Vector2d;
 import agh.ics.oop.MapElements.Animal;
 import agh.ics.oop.Maps.Jungle;
-import agh.ics.oop.gui.SettingsSetter;
+
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -37,7 +37,6 @@ public class SimulationEngine implements Runnable{
                 animals.add(animalToAdd);
                 nOfAnimals++;
             }
-
         }
     }
     public void addAnimal(Animal animal){

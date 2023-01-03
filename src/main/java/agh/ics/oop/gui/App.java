@@ -15,7 +15,6 @@ import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -32,11 +31,10 @@ public class App extends Application implements IPositionChangeObserver {
     private Stage stage;
     private SimulationEngine engine;
     private Thread simulationThread;
-    private Button button = new Button("Start");
+    final Button button = new Button("Start");
 
     private boolean buttonFlag = true;
 
-    private TextField textField = new TextField ();
     private Animal highlightedAnimal;
 
     GridPane rootPane = new GridPane();
@@ -46,10 +44,6 @@ public class App extends Application implements IPositionChangeObserver {
     GridPane animalStatsPane;
     Scene scene = new Scene(rootPane, 800, 800);
     GridPane mapGridPane;
-    @Override
-    public void init() {
-
-    }
 
     @Override
     public void start(Stage primaryStage){
@@ -68,7 +62,8 @@ public class App extends Application implements IPositionChangeObserver {
             this.simulationThread.start();
             buttonFlag = !buttonFlag;
             button.setText("Stop");
-            drawMap(stage);
+            stage.setScene(scene);
+            drawMap();
             drawButton();
         });
 
@@ -80,8 +75,6 @@ public class App extends Application implements IPositionChangeObserver {
         Scene scene = new Scene(gridPane, 800, 800);
         stage.setScene(scene);
         stage.show();
-
-        //draw(stage);
     }
 
     private void drawButton(){
@@ -108,7 +101,7 @@ public class App extends Application implements IPositionChangeObserver {
         buttonPane.add(button,0,0);
         rootPane.add(buttonPane,0,1);
     }
-    private void drawMap(Stage stage){
+    private void drawMap(){
         rootPane.getChildren().remove(mapGridPane);
         rootPane.getChildren().remove(statsPane);
         mapGridPane = new GridPane();
@@ -148,17 +141,14 @@ public class App extends Application implements IPositionChangeObserver {
         for(int i=lowerLeft.x ;i<=upperRight.x;i++){
             for(int j=lowerLeft.y ;j<=upperRight.y;j++){
                 IMapElement el = (IMapElement) map.objectAt(new Vector2d(i,j));
-                Text toAdd = new Text();
                 VBox vbox;
                 if(el!=null){
                     vbox = new VBox( new GuiElementBox(el).getVbox() );
                     if(el instanceof Animal){
-                        vbox.setOnMouseClicked( new EventHandler<Event>() {
-                            @Override
-                            public void handle(Event event) {
-                                changeHighligtedAnima((Animal) el);
-                                displaySingleAnimalStats();
-                            }
+                        vbox.setOnMouseClicked((EventHandler<Event>) event -> {
+                            changeHighligtedAnima((Animal) el);
+                            drawMap();
+                            displaySingleAnimalStats();
                         });
                     }
                     mapGridPane.add(vbox,i+1,upperRight.y+1-j);
@@ -170,12 +160,9 @@ public class App extends Application implements IPositionChangeObserver {
                 if(el instanceof Animal){
                     int[]genotype =((Animal) el).getGenotype().getGenes();
                     Integer counter = genotypes.get(genotype);
-                    if(counter==null){
-                        genotypes.put(genotype,1);
-                    }
-                    else {
-                        genotypes.put(genotype,counter+1);
-                    }
+
+                    genotypes.merge(genotype, 1, Integer::sum);
+
                     if(counter!= null && counter>mostPopularGenotypeCounter){
                         mostPopularGenotype = genotype;
                         mostPopularGenotypeCounter=counter+1;
@@ -185,9 +172,16 @@ public class App extends Application implements IPositionChangeObserver {
                         mostPopularGenotypeCounter=1;
                     }
                 }
-
             }
         }
+
+        displayMapStats(freeSpace,mostPopularGenotype);
+
+        if(highlightedAnimal != null){
+            displaySingleAnimalStats();
+        }
+    }
+    private void displayMapStats(int freeSpace, int[] mostPopularGenotype){
         float [] stats = map.getAnimalsStats();
         Label animalCount = new Label("Animals on map: "+stats[0]);
         statsPane.add(animalCount,0,0);
@@ -206,28 +200,12 @@ public class App extends Application implements IPositionChangeObserver {
 //
         Label avgAge = new Label("Average dead animal age: "+map.getDeadAnimalsAvgAge());
         statsPane.add(avgAge,0,5);
-
-        if(highlightedAnimal != null){
-            displaySingleAnimalStats();
-        }
-
-        stage.setScene(scene);
-        stage.show();
-
-
-    }
-    private void changeHighligtedAnima(Animal animal){
-        if(highlightedAnimal != null){
-            highlightedAnimal.setHighlight(false);
-        }
-        animal.setHighlight(true);
-        highlightedAnimal=animal;
     }
     private void displaySingleAnimalStats(){
         rootPane.getChildren().remove(animalStatsPane);
         animalStatsPane = new GridPane();
 
-        Label animalCount = new Label("Animal stats:");
+        Label animalCount = new Label("Animal stats: ");
         animalStatsPane.add(animalCount,0,0);
 
         Label genome = new Label("genome: " + intArrayToString(highlightedAnimal.getGenotype().getGenes()) );
@@ -250,6 +228,17 @@ public class App extends Application implements IPositionChangeObserver {
 
         rootPane.add(animalStatsPane,1,2);
     }
+    private void changeHighligtedAnima(Animal animal){
+        if(highlightedAnimal != null){
+            highlightedAnimal.setHighlight(false);
+        }
+        animal.setHighlight(true);
+        highlightedAnimal=animal;
+    }
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition, Animal animal) {
+        Platform.runLater( ()-> drawMap() );
+    }
     private String intArrayToString(int[] arr){
         String arrayString = "";
         for (int element: arr) {
@@ -257,9 +246,4 @@ public class App extends Application implements IPositionChangeObserver {
         }
         return arrayString;
     }
-    @Override
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition, Animal animal) {
-        Platform.runLater( ()-> drawMap(stage) );
-    }
-
 }

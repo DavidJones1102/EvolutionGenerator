@@ -78,4 +78,13 @@ public class Genotype {
         return currentGeneNr;
     }
 
+    @Override
+    public String toString(){
+        String arrayString = "";
+        for (int element: genes) {
+            arrayString+=element+" ";
+        }
+        return arrayString;
+    }
+
 }
