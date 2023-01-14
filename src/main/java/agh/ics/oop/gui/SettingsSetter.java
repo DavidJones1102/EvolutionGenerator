@@ -24,7 +24,7 @@ public class SettingsSetter extends VBox {
     private NumberTextField genomeSizeInput;
     private NumberTextField startingAnimalsNumberInput;
     private NumberTextField energyTakenDuringCopulationInput;
-    public boolean showMapVariant = false;
+    public boolean showMapVariant = false;  // public?
     public boolean showMutationVariant = false;
     public boolean showBehaviorVariant = false;
 
@@ -36,63 +36,63 @@ public class SettingsSetter extends VBox {
 
         Label widthLabel = new Label("width");
         widthInput = new NumberTextField();
-        VBox width = new VBox(widthLabel,widthInput);
+        VBox width = new VBox(widthLabel, widthInput);
         getChildren().add(width);
 
         Label heightLabel = new Label("height");
         heightInput = new NumberTextField();
-        VBox height = new VBox(heightLabel,heightInput);
+        VBox height = new VBox(heightLabel, heightInput);
         getChildren().add(height);
 
         Label dailyGrassAmountLabel = new Label("dailyGrassAmount");
         dailyGrassAmountInput = new NumberTextField();
-        VBox dailyGrassAmount = new VBox(dailyGrassAmountLabel,dailyGrassAmountInput);
+        VBox dailyGrassAmount = new VBox(dailyGrassAmountLabel, dailyGrassAmountInput);
         getChildren().add(dailyGrassAmount);
 
         Label startingGrassAmountLabel = new Label("startingGrassAmount");
         startingGrassAmountInput = new NumberTextField();
-        VBox startingGrassAmount = new VBox(startingGrassAmountLabel,startingGrassAmountInput);
+        VBox startingGrassAmount = new VBox(startingGrassAmountLabel, startingGrassAmountInput);
         getChildren().add(startingGrassAmount);
 
         Label startingEnergyLabel = new Label("startingEnergy");
         startingEnergyInput = new NumberTextField();
-        VBox startingEnergy = new VBox(startingEnergyLabel,startingEnergyInput);
+        VBox startingEnergy = new VBox(startingEnergyLabel, startingEnergyInput);
         getChildren().add(startingEnergy);
 
         Label energyFromGrassLabel = new Label("energyFromGrass");
         energyFromGrassInput = new NumberTextField();
-        VBox energyFromGrass = new VBox(energyFromGrassLabel,energyFromGrassInput);
+        VBox energyFromGrass = new VBox(energyFromGrassLabel, energyFromGrassInput);
         getChildren().add(energyFromGrass);
 
         Label genomeSizeLabel = new Label("genomeSize");
         genomeSizeInput = new NumberTextField();
-        VBox genomeSize = new VBox(genomeSizeLabel,genomeSizeInput);
+        VBox genomeSize = new VBox(genomeSizeLabel, genomeSizeInput);
         getChildren().add(genomeSize);
 
         Label energyNeededToCopulationLabel = new Label("energyNeededToCopulation");
         energyNeededToCopulationInput = new NumberTextField();
-        VBox energyNeededToCopulation = new VBox(energyNeededToCopulationLabel,energyNeededToCopulationInput);
+        VBox energyNeededToCopulation = new VBox(energyNeededToCopulationLabel, energyNeededToCopulationInput);
         getChildren().add(energyNeededToCopulation);
 
         Label energyTakenDuringCopulationLabel = new Label("energyTakenDuringCopulation");
         energyTakenDuringCopulationInput = new NumberTextField();
-        VBox energyTakenDuringCopulation = new VBox(energyTakenDuringCopulationLabel,energyTakenDuringCopulationInput);
+        VBox energyTakenDuringCopulation = new VBox(energyTakenDuringCopulationLabel, energyTakenDuringCopulationInput);
         getChildren().add(energyTakenDuringCopulation);
 
         Label minMutationLabel = new Label("minMutation");
         minMutationInput = new NumberTextField();
-        VBox minMutation = new VBox(minMutationLabel,minMutationInput);
+        VBox minMutation = new VBox(minMutationLabel, minMutationInput);
         getChildren().add(minMutation);
 
 
         Label maxMutationLabel = new Label("maxMutation");
         maxMutationInput = new NumberTextField();
-        VBox maxMutation = new VBox(maxMutationLabel,maxMutationInput);
+        VBox maxMutation = new VBox(maxMutationLabel, maxMutationInput);
         getChildren().add(maxMutation);
 
         Label startingAnimalsNumberLabel = new Label("startingAnimalsNumber");
         startingAnimalsNumberInput = new NumberTextField();
-        VBox startingAnimalsNumber = new VBox(startingAnimalsNumberLabel,startingAnimalsNumberInput);
+        VBox startingAnimalsNumber = new VBox(startingAnimalsNumberLabel, startingAnimalsNumberInput);
         getChildren().add(startingAnimalsNumber);
 
         Button mapVariantButton = new Button();
@@ -130,7 +130,7 @@ public class SettingsSetter extends VBox {
 
     }
 
-    private void recommendedSettings(){
+    private void recommendedSettings() {
         heightInput.setNumber(new BigDecimal(11));
         widthInput.setNumber(new BigDecimal(11));
         startingGrassAmountInput.setNumber(new BigDecimal(10));
@@ -144,7 +144,8 @@ public class SettingsSetter extends VBox {
         energyNeededToCopulationInput.setNumber(new BigDecimal(10));
         maxMutationInput.setNumber(new BigDecimal(2));
     }
-    public void getSettings(){
+
+    public void getSettings() {
         settings.mapHeight = heightInput.getNumber().intValue();
         settings.mapWidth = widthInput.getNumber().intValue();
         settings.startingGrassAmount = startingGrassAmountInput.getNumber().intValue();//

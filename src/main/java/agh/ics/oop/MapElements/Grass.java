@@ -3,7 +3,7 @@ package agh.ics.oop.MapElements;
 import agh.ics.oop.MapElementsValues.Vector2d;
 
 public class Grass extends AbstractMapElement {
-    public Grass( Vector2d given_position ){
+    public Grass(Vector2d given_position) {
         position = given_position;
     }
 

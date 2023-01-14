@@ -3,7 +3,7 @@ package agh.ics.oop.MapElementsValues;
 import agh.ics.oop.gui.NumberTextField;
 
 public class Settings {
-    public int mapHeight;
+    public int mapHeight;  // public? co może pójść nie tak?
     public int mapWidth;
     public int startingGrassAmount;
     public int energyFromGrass;

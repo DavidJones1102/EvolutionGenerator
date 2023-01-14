@@ -15,14 +15,15 @@ public class GuiElementBox {
     private ImageView imageView;
     private Label label;
     private VBox vbox;
-    public GuiElementBox(IMapElement element){
+
+    public GuiElementBox(IMapElement element) {
         try {
             image = new Image(new FileInputStream(element.getImage()));
             imageView = new ImageView(image);
             imageView.setFitWidth(20);
             imageView.setFitHeight(20);
             label = new Label(element.getLabel());
-            vbox = new VBox(imageView,label);
+            vbox = new VBox(imageView, label);
             vbox.setAlignment(Pos.CENTER);
 
         } catch (FileNotFoundException e) {
