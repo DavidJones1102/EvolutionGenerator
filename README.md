@@ -1,1 +1,2 @@
-# Evolution generator for my UST object oriented programming course
+# Evolution generator 
+Code for my UST object oriented programming course
